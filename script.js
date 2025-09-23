@@ -117,6 +117,19 @@ const states = [
     "Dadra and Nagar Haveli and Daman and Diu", "Delhi", "Jammu and Kashmir", "Ladakh", "Lakshadweep", "Puducherry"
 ];
 
+// --- UTILITY: DEBOUNCE FUNCTION ---
+// Prevents a function from running too often.
+function debounce(func, delay = 400) {
+    let timeout;
+    return (...args) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+            func.apply(this, args);
+        }, delay);
+    };
+}
+
+
 // --- SCRIPT LOGIC ---
 document.addEventListener('DOMContentLoaded', () => {
     // --- LOGIN LOGIC ---
@@ -146,7 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function initializeApp() {
     // Populate the states dropdown
     const stateSelect = document.getElementById('state');
-    if (stateSelect.options.length <= 1) { // Prevents re-populating on error
+    if (stateSelect.options.length <= 1) { 
         states.forEach(state => {
             const option = document.createElement('option');
             option.value = state;
@@ -155,11 +168,20 @@ function initializeApp() {
         });
     }
 
-    // Attach form submission listener
     const form = document.getElementById('scholarship-form');
-    form.addEventListener('submit', function(event) {
-        event.preventDefault();
-        findScholarships();
+    
+    // --- NEW: Real-time filtering with debounce ---
+    // Create a debounced version of the findScholarships function.
+    const debouncedFind = debounce(findScholarships);
+    // Listen for any input change on the form.
+    form.addEventListener('input', debouncedFind);
+
+    // --- NEW: Clear form button logic ---
+    const clearBtn = document.getElementById('clear-form-btn');
+    clearBtn.addEventListener('click', () => {
+        form.reset();
+        // Manually trigger an input event to re-run the search with cleared filters
+        form.dispatchEvent(new Event('input')); 
     });
     
     // Initialize Lucide icons
@@ -172,9 +194,9 @@ function findScholarships() {
     
     const student = {
         category: document.getElementById('category').value,
-        income: parseInt(document.getElementById('income').value, 10),
+        income: parseInt(document.getElementById('income').value, 10) || 0,
         domicile: document.getElementById('state').value,
-        marks: parseInt(document.getElementById('marks').value, 10),
+        marks: parseInt(document.getElementById('marks').value, 10) || 0,
         isExServiceman: document.getElementById('exServiceman').checked,
         isFarmer: document.getElementById('farmer').checked,
         isDisabled: document.getElementById('disabled').checked
@@ -182,6 +204,11 @@ function findScholarships() {
 
     // Filter the scholarships database
     const eligibleScholarships = scholarships.filter(s => {
+        // Don't show results if required fields are empty
+        if (!student.income || !student.marks) {
+            return false;
+        }
+
         const e = s.eligibility;
         
         // Filter by scholarship type first
@@ -200,16 +227,30 @@ function findScholarships() {
         return true; // If no rules failed, the scholarship is a match
     });
 
-    displayResults(eligibleScholarships);
+    displayResults(eligibleScholarships, student);
 }
 
-function displayResults(results) {
+function displayResults(results, student) {
     const container = document.getElementById('results-container');
     container.innerHTML = ''; // Clear previous results
 
+    if (!student.income || !student.marks) {
+         container.innerHTML = `
+            <div class="bg-white p-8 rounded-xl shadow-lg text-center h-full flex flex-col justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-16 w-16 text-indigo-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                </svg>
+                <h3 class="mt-4 text-xl font-semibold text-gray-900">Ready to find scholarships?</h3>
+                <p class="mt-1 text-gray-500">Please enter your <strong class="text-indigo-600">income and marks</strong> to start seeing results.</p>
+            </div>
+        `;
+        return;
+    }
+
+
     if (results.length === 0) {
         container.innerHTML = `
-            <div class="bg-white p-8 rounded-xl shadow-lg text-center">
+            <div class="bg-white p-8 rounded-xl shadow-lg text-center result-card" style="animation: card-fade-in 0.5s ease-out forwards;">
                  <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" /></svg>
                 <h3 class="mt-4 text-xl font-semibold text-gray-900">No Matching Scholarships Found</h3>
                 <p class="mt-1 text-gray-500">Based on the provided details, we couldn't find any direct matches. Try adjusting the criteria or check the official portals for more schemes.</p>
@@ -218,11 +259,13 @@ function displayResults(results) {
         return;
     }
 
-    results.forEach(s => {
+    results.forEach((s, index) => {
         const card = document.createElement('div');
-        card.className = 'bg-white p-6 rounded-xl shadow-lg border border-gray-200 hover:shadow-indigo-100 transition-shadow';
+        // --- NEW: Added result-card class for animation ---
+        card.className = 'bg-white p-6 rounded-xl shadow-lg border border-gray-200 hover:shadow-indigo-100 transition-shadow result-card';
+        // --- NEW: Staggered animation delay ---
+        card.style.animation = `card-fade-in 0.5s ease-out ${index * 100}ms forwards`;
         
-        // Determine tag style based on scholarship type
         const typeClass = s.type.toLowerCase() === 'private' ? 'tag-private' : 'tag-government';
         const typeTag = `<span class="tag ${typeClass}">${s.type}</span>`;
 
@@ -245,7 +288,7 @@ function displayResults(results) {
                 </ul>
             </div>
             <div class="mt-5">
-                 <a href="${s.link}" target="_blank" class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                 <a href="${s.link}" target="_blank" class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all transform hover:-translate-y-0.5">
                    Visit Portal
                    <i data-lucide="arrow-right" class="ml-2 h-4 w-4"></i>
                 </a>
