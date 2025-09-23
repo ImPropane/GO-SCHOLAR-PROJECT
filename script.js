@@ -1,7 +1,9 @@
 // --- SCHOLARSHIP DATABASE ---
 const scholarships = [
-    // Central Government - National Scholarship Portal (NSP)
+    // --- MODIFIED: Added 'type' property to all scholarships ---
+    // --- Government Scholarships ---
     {
+        type: "Government",
         name: "Pre-Matric Scholarships Scheme for Minorities",
         portal: "National Scholarship Portal (NSP)",
         link: "https://scholarships.gov.in/",
@@ -13,6 +15,7 @@ const scholarships = [
         }
     },
     {
+        type: "Government",
         name: "Post-Matric Scholarships Scheme for Minorities",
         portal: "National Scholarship Portal (NSP)",
         link: "https://scholarships.gov.in/",
@@ -24,38 +27,20 @@ const scholarships = [
         }
     },
      {
+        type: "Government",
         name: "Central Sector Scheme of Scholarships for College and University Students",
         portal: "National Scholarship Portal (NSP)",
         link: "https://scholarships.gov.in/",
         description: "Provides financial assistance to meritorious students from low-income families to meet day-to-day expenses while pursuing higher studies.",
         eligibility: {
             category: ["GENERAL", "OBC", "SC", "ST"],
-            income: 450000, // Updated from 8L to 4.5L as per recent guidelines
-            minMarks: 80, // Top 20th percentile of successful candidates in Class 12
+            income: 450000,
+            minMarks: 80, 
         }
     },
     {
-        name: "Prime Minister's Scholarship Scheme For Wards of States/UTs Police Personnel",
-        portal: "National Scholarship Portal (NSP)",
-        link: "https://scholarships.gov.in/",
-        description: "A scholarship scheme for the dependent wards of State/UTs Police Personnel who are martyred during Terror/Naxal attacks.",
-        eligibility: {
-            isExServiceman: true,
-            minMarks: 60,
-        }
-    },
-    {
-        name: "Post-Matric Scholarship for Students with Disabilities",
-        portal: "National Scholarship Portal (NSP)",
-        link: "https://scholarships.gov.in/",
-        description: "Empowering students with disabilities for post-matric education. For students with 40% or more disability.",
-        eligibility: {
-            isDisabled: true,
-            income: 250000,
-        }
-    },
-    {
-        name: "Post Matric Scholarship for SC Students",
+        type: "Government",
+        name: "Post-Matric Scholarship for SC Students",
         portal: "State Portals / NSP",
         link: "https://scholarships.gov.in/",
         description: "Financial assistance to Scheduled Caste students pursuing post-matriculation courses in India.",
@@ -65,27 +50,7 @@ const scholarships = [
         }
     },
     {
-        name: "Post Matric Scholarship for ST Students",
-        portal: "State Portals / NSP",
-        link: "https://scholarships.gov.in/",
-        description: "Financial assistance to Scheduled Tribe students for post-matric studies.",
-        eligibility: {
-            category: ["ST"],
-            income: 250000,
-        }
-    },
-    {
-        name: "Post Matric Scholarship for OBC Students",
-        portal: "State Portals / NSP",
-        link: "https://scholarships.gov.in/",
-        description: "Financial assistance to Other Backward Classes (OBC) students for post-matric studies.",
-        eligibility: {
-            category: ["OBC", "EBC"],
-            income: 150000,
-        }
-    },
-    // State Specific (Example)
-     {
+        type: "Government",
         name: "Rajarshi Chhatrapati Shahu Maharaj Shikshan Shulkh Shishyavrutti Yojana (Maharashtra)",
         portal: "MahaDBT Portal",
         link: "https://mahadbtmahait.gov.in/",
@@ -97,26 +62,50 @@ const scholarships = [
             minMarks: 60,
         }
     },
+    
+    // --- ADDED: Private Scholarships Section ---
     {
-        name: "Mukhyamantri Medhavi Vidyarthi Yojana (Madhya Pradesh)",
-        portal: "State Scholarship Portal 2.0 (MP)",
-        link: "http://scholarshipportal.mp.nic.in/",
-        description: "Full fee coverage for meritorious students for admission to graduate-level courses in Madhya Pradesh.",
+        type: "Private",
+        name: "Reliance Foundation Undergraduate Scholarships",
+        portal: "Reliance Foundation Portal",
+        link: "https://www.reliancefoundation.org/education/scholarships",
+        description: "Supports meritorious students for any stream of their choice. Aims to select 5,000 students annually.",
         eligibility: {
-            domicile: ["Madhya Pradesh"],
-            income: 600000,
-            minMarks: 70, // In MP Board 12th, or 85 in CBSE/ICSE
+            income: 250000,
+            minMarks: 60, // in 12th standard
         }
     },
     {
-        name: "Swami Vivekananda Merit Cum Means Scholarship (West Bengal)",
-        portal: "SVMCM Portal",
-        link: "https://svmcm.wbhed.gov.in/",
-        description: "Scholarship for meritorious and economically backward students of West Bengal pursuing higher studies.",
+        type: "Private",
+        name: "HDFC Bank Parivartan's ECSS Programme",
+        portal: "Buddy4Study",
+        link: "https://www.buddy4study.com/page/hdfc-bank-parivartans-ecss-programme",
+        description: "For meritorious and needy students belonging to underprivileged sections of society. Covers school, UG, and PG students.",
         eligibility: {
-            domicile: ["West Bengal"],
             income: 250000,
-            minMarks: 60, // varies by level
+            minMarks: 55,
+        }
+    },
+    {
+        type: "Private",
+        name: "Tata Capital Pankh Scholarship Programme",
+        portal: "Tata Capital Official Site",
+        link: "https://www.tatacapital.com/pankh-scholarship.html",
+        description: "Aims to support meritorious students from economically weaker sections to pursue their academic goals without financial burden.",
+        eligibility: {
+            income: 400000,
+            minMarks: 60,
+        }
+    },
+    {
+        type: "Private",
+        name: "Infosys Foundation - Aarohan Social Innovation Awards",
+        portal: "Infosys Foundation",
+        link: "https://www.infosys.com/infosys-foundation.html",
+        description: "An award for innovators in the social sector, but they also have educational programs. This is a proxy for their various educational initiatives.",
+        eligibility: {
+            // Eligibility for their scholarships can be very specific
+            minMarks: 70, 
         }
     }
 ];
@@ -146,10 +135,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const password = loginPasswordInput.value;
 
         // Check credentials
-        if (id === 'ALU KHAYEGA' && password === 'TU KHA') {
+        if (id.toUpperCase() === 'WHOS THE GOAT' && password.toUpperCase() === 'BHAVARTHA') {
             loginOverlay.classList.add('hidden');
             mainContent.classList.remove('hidden');
-            // Initialize the main app logic only after successful login
             initializeApp(); 
         } else {
             loginError.classList.remove('hidden');
@@ -158,9 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function initializeApp() {
-     // Populate states dropdown
     const stateSelect = document.getElementById('state');
-    // Check if dropdown is already populated to avoid duplicates
     if (stateSelect.options.length <= 1) {
         states.forEach(state => {
             const option = document.createElement('option');
@@ -175,52 +161,14 @@ function initializeApp() {
         event.preventDefault();
         findScholarships();
     });
-
-    // --- SHARE BUTTON LOGIC ---
-    const shareButton = document.getElementById('share-button');
-    shareButton.addEventListener('click', async () => {
-        const shareData = {
-            title: 'GoScholar India',
-            text: 'Check out this Government Scholarship Recommendation System!',
-            url: window.location.href
-        };
-
-        if (navigator.share) { // Use Web Share API if available
-            try {
-                await navigator.share(shareData);
-            } catch (err) {
-                console.log("Sharing cancelled or failed", err);
-            }
-        } else { // Fallback to copying link
-            const originalButtonHTML = shareButton.innerHTML;
-            
-            const textArea = document.createElement("textarea");
-            textArea.value = window.location.href;
-            textArea.style.position = "fixed"; // Prevent scrolling to bottom
-            textArea.style.left = "-9999px";
-            document.body.appendChild(textArea);
-            textArea.select();
-            try {
-                document.execCommand('copy');
-                shareButton.textContent = 'Link Copied!';
-            } catch (err) {
-                console.error('Unable to copy', err);
-                shareButton.textContent = 'Copy Failed';
-            }
-            document.body.removeChild(textArea);
-
-            setTimeout(() => {
-                shareButton.innerHTML = originalButtonHTML;
-                lucide.createIcons(); // Re-create the icon after restoring HTML
-            }, 2000);
-        }
-    });
     
     lucide.createIcons();
 }
 
 function findScholarships() {
-    // Get student data from form. Note: not all fields are used for filtering yet.
+    // --- MODIFIED: Get scholarship type from the new radio buttons ---
+    const scholarshipType = document.querySelector('input[name="scholarshipType"]:checked').value;
+    
     const student = {
         category: document.getElementById('category').value,
         income: parseInt(document.getElementById('income').value, 10),
@@ -231,29 +179,21 @@ function findScholarships() {
         isDisabled: document.getElementById('disabled').checked
     };
 
-    // Filter scholarships based on key eligibility criteria
     const eligibleScholarships = scholarships.filter(s => {
         const e = s.eligibility;
         
-        // Income Check
+        // --- MODIFIED: Check scholarship type first ---
+        if (scholarshipType !== 'All' && s.type !== scholarshipType) {
+            return false;
+        }
+
         if (e.income && student.income > e.income) return false;
-
-        // Category Check
         if (e.category && !e.category.includes(student.category)) return false;
-        
-        // Minimum Marks Check
         if (e.minMarks && student.marks < e.minMarks) return false;
-
-        // Domicile Check (if specified)
         if (e.domicile && !e.domicile.includes(student.domicile)) return false;
-
-        // Ex-Serviceman Check
         if (e.isExServiceman && !student.isExServiceman) return false;
-
-        // Disability Check
         if (e.isDisabled && !student.isDisabled) return false;
 
-        // If all checks pass, it's a match
         return true;
     });
 
@@ -262,7 +202,7 @@ function findScholarships() {
 
 function displayResults(results) {
     const container = document.getElementById('results-container');
-    container.innerHTML = ''; // Clear previous results
+    container.innerHTML = ''; 
 
     if (results.length === 0) {
         container.innerHTML = `
@@ -278,8 +218,16 @@ function displayResults(results) {
     results.forEach(s => {
         const card = document.createElement('div');
         card.className = 'bg-white p-6 rounded-xl shadow-lg border border-gray-200 hover:shadow-indigo-100 transition-shadow';
+        
+        // --- MODIFIED: Create a tag based on scholarship type ---
+        const typeClass = s.type.toLowerCase() === 'private' ? 'tag-private' : 'tag-government';
+        const typeTag = `<span class="tag ${typeClass}">${s.type}</span>`;
+
         card.innerHTML = `
-            <h3 class="text-xl font-bold text-indigo-700">${s.name}</h3>
+            <div class="flex justify-between items-start">
+                 <h3 class="text-xl font-bold text-indigo-700">${s.name}</h3>
+                 ${typeTag}
+            </div>
             <p class="text-sm font-medium text-gray-500 mt-1 mb-3">Portal: ${s.portal}</p>
             <p class="text-gray-600 mb-4">${s.description}</p>
             <div class="border-t border-gray-200 pt-4">
@@ -302,5 +250,7 @@ function displayResults(results) {
         `;
         container.appendChild(card);
     });
-    lucide.createIcons(); // Re-render icons after adding new elements
+    lucide.createIcons();
 }
+
+
