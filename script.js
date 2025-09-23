@@ -1,6 +1,5 @@
 // --- SCHOLARSHIP DATABASE ---
 const scholarships = [
-    // --- MODIFIED: Added 'type' property to all scholarships ---
     // --- Government Scholarships ---
     {
         type: "Government",
@@ -63,7 +62,7 @@ const scholarships = [
         }
     },
     
-    // --- ADDED: Private Scholarships Section ---
+    // --- Private Scholarships ---
     {
         type: "Private",
         name: "Reliance Foundation Undergraduate Scholarships",
@@ -104,7 +103,6 @@ const scholarships = [
         link: "https://www.infosys.com/infosys-foundation.html",
         description: "An award for innovators in the social sector, but they also have educational programs. This is a proxy for their various educational initiatives.",
         eligibility: {
-            // Eligibility for their scholarships can be very specific
             minMarks: 70, 
         }
     }
@@ -134,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const id = loginIdInput.value;
         const password = loginPasswordInput.value;
 
-        // Check credentials
+        // Check credentials (case-insensitive)
         if (id.toUpperCase() === 'WHOS THE GOAT' && password.toUpperCase() === 'BHAVARTHA') {
             loginOverlay.classList.add('hidden');
             mainContent.classList.remove('hidden');
@@ -146,8 +144,9 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function initializeApp() {
+    // Populate the states dropdown
     const stateSelect = document.getElementById('state');
-    if (stateSelect.options.length <= 1) {
+    if (stateSelect.options.length <= 1) { // Prevents re-populating on error
         states.forEach(state => {
             const option = document.createElement('option');
             option.value = state;
@@ -156,17 +155,19 @@ function initializeApp() {
         });
     }
 
+    // Attach form submission listener
     const form = document.getElementById('scholarship-form');
     form.addEventListener('submit', function(event) {
         event.preventDefault();
         findScholarships();
     });
     
+    // Initialize Lucide icons
     lucide.createIcons();
 }
 
 function findScholarships() {
-    // --- MODIFIED: Get scholarship type from the new radio buttons ---
+    // Get all student details from the form
     const scholarshipType = document.querySelector('input[name="scholarshipType"]:checked').value;
     
     const student = {
@@ -179,14 +180,16 @@ function findScholarships() {
         isDisabled: document.getElementById('disabled').checked
     };
 
+    // Filter the scholarships database
     const eligibleScholarships = scholarships.filter(s => {
         const e = s.eligibility;
         
-        // --- MODIFIED: Check scholarship type first ---
+        // Filter by scholarship type first
         if (scholarshipType !== 'All' && s.type !== scholarshipType) {
             return false;
         }
 
+        // Apply all other eligibility rules
         if (e.income && student.income > e.income) return false;
         if (e.category && !e.category.includes(student.category)) return false;
         if (e.minMarks && student.marks < e.minMarks) return false;
@@ -194,7 +197,7 @@ function findScholarships() {
         if (e.isExServiceman && !student.isExServiceman) return false;
         if (e.isDisabled && !student.isDisabled) return false;
 
-        return true;
+        return true; // If no rules failed, the scholarship is a match
     });
 
     displayResults(eligibleScholarships);
@@ -202,7 +205,7 @@ function findScholarships() {
 
 function displayResults(results) {
     const container = document.getElementById('results-container');
-    container.innerHTML = ''; 
+    container.innerHTML = ''; // Clear previous results
 
     if (results.length === 0) {
         container.innerHTML = `
@@ -219,7 +222,7 @@ function displayResults(results) {
         const card = document.createElement('div');
         card.className = 'bg-white p-6 rounded-xl shadow-lg border border-gray-200 hover:shadow-indigo-100 transition-shadow';
         
-        // --- MODIFIED: Create a tag based on scholarship type ---
+        // Determine tag style based on scholarship type
         const typeClass = s.type.toLowerCase() === 'private' ? 'tag-private' : 'tag-government';
         const typeTag = `<span class="tag ${typeClass}">${s.type}</span>`;
 
@@ -250,7 +253,6 @@ function displayResults(results) {
         `;
         container.appendChild(card);
     });
-    lucide.createIcons();
+    lucide.createIcons(); // Re-initialize icons after adding new elements
 }
-
 
