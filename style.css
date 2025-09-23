@@ -2,6 +2,7 @@
 
 body {
     font-family: 'Inter', sans-serif;
+    scroll-behavior: smooth;
 }
 
 /* Login form fade-in animation */
@@ -41,5 +42,25 @@ body {
     background-color: #D1FAE5; /* green-100 */
     color: #047857; /* green-700 */
     border: 1px solid #6EE7B7; /* green-300 */
+}
+
+
+/* Animation for result cards appearing */
+@keyframes card-fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.result-card {
+    /* Set initial state for animation */
+    opacity: 0; 
+    /* The animation will be applied via JavaScript to create a staggered effect */
+    animation-fill-mode: forwards;
 }
 
