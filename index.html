@@ -3,174 +3,557 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GoScholar India - Scholarship Recommendation</title>
+    <title>GoScholar India - The Ultimate Scholarship Finder</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Base Styling & Font */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #030712; /* gray-950 */
+            color: #d1d5db; /* gray-300 */
+        }
+        
+        /* --- New: Animated Gradient Background --- */
+        .main-container::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #4c1d95, #86198f, #9f1239, #4c1d95);
+            background-size: 400% 400%;
+            animation: gradient-flow 20s ease infinite;
+            filter: blur(120px);
+            opacity: 0.25;
+            z-index: -1;
+            will-change: background-position;
+        }
+
+        @keyframes gradient-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- New: Glassmorphism Effect --- */
+        .glass-panel {
+            background: rgba(17, 24, 39, 0.6); /* gray-900 with opacity */
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        /* Animations & Transitions */
+        @keyframes fade-in-up { from { opacity: 0; transform: translateY(20px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        .animate-fade-in-up { animation: fade-in-up 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
+        @keyframes card-fade-in { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .dynamic-field { animation: card-fade-in 0.4s ease-out forwards; }
+
+        /* Scholarship Type Tags */
+        .tag { @apply inline-block px-3 py-1 text-xs font-semibold rounded-full border; }
+        .tag-government { @apply bg-purple-500/10 text-purple-300 border-purple-500/20; }
+        .tag-private { @apply bg-pink-500/10 text-pink-300 border-pink-500/20; }
+        
+        /* --- New: Card Design --- */
+        .result-card {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .result-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(216, 180, 254, 0.4); /* purple-300 with opacity */
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.2), 0 8px 10px -6px rgb(0 0 0 / 0.2);
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #111827; }
+        ::-webkit-scrollbar-thumb { background: #374151; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #4b5563; }
+    </style>
 </head>
-<body class="bg-gray-50 font-sans">
+<body class="font-sans">
 
     <!-- Login Overlay -->
-    <div id="login-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-80 flex items-center justify-center z-50">
-        <div class="bg-white p-10 rounded-2xl shadow-2xl w-full max-w-md text-center transform transition-all scale-95 opacity-0 animate-fade-in-up">
-            <h2 class="text-3xl font-bold text-indigo-700 mb-2">Welcome to GoScholar</h2>
-            <p class="text-gray-600 mb-8">Please log in to continue.</p>
+    <div id="login-overlay" class="fixed inset-0 bg-gray-900/50 backdrop-blur-md flex items-center justify-center z-50 p-4">
+        <div class="glass-panel p-10 rounded-2xl w-full max-w-md text-center transform transition-all animate-fade-in-up">
+            <h2 class="text-3xl font-extrabold text-purple-300 mb-2 tracking-tighter">Welcome to GoScholar</h2>
+            <p class="text-gray-400 mb-8">The future of scholarship hunting.</p>
             <form id="login-form">
-                <div class="mb-4 text-left">
-                    <label for="login-id" class="block text-sm font-medium text-gray-700 mb-1">ID</label>
-                    <input type="text" id="login-id" name="login-id" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition-shadow" placeholder="Enter your ID" required>
-                </div>
-                <div class="mb-6 text-left">
-                    <label for="login-password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                    <input type="password" id="login-password" name="login-password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition-shadow" placeholder="Enter your password" required>
-                </div>
-                <p id="login-error" class="hidden text-red-500 text-sm mb-4">Invalid ID or Password. Please try again.</p>
-                <button type="submit" class="w-full bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 shadow-lg hover:shadow-indigo-500/50 transform hover:-translate-y-0.5">
-                    Login
-                </button>
+                 <button type="submit" class="w-full bg-fuchsia-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-fuchsia-700 transition-all duration-300 shadow-lg hover:shadow-fuchsia-500/40 transform hover:-translate-y-1">Login for Testing</button>
             </form>
         </div>
     </div>
 
     <!-- Main Application Content -->
-    <div id="main-content" class="hidden">
-        <header class="bg-white shadow-md sticky top-0 z-40">
+    <div id="main-content" class="hidden main-container relative min-h-screen">
+        <header class="glass-panel sticky top-0 z-40">
             <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-                <h1 class="text-2xl font-bold text-indigo-800">GoScholar India</h1>
+                <h1 class="text-2xl font-bold text-gray-100 tracking-tight">GoScholar India</h1>
+                <div class="flex space-x-4 items-center">
+                    <button id="tab-finder" class="px-3 py-1.5 text-sm font-medium rounded-md text-gray-200 bg-gray-700/50">Finder</button>
+                    <button id="tab-all" class="px-3 py-1.5 text-sm font-medium rounded-md text-gray-400 hover:bg-gray-700/50 hover:text-gray-200">All Scholarships</button>
+                </div>
             </div>
         </header>
-
-        <main class="container mx-auto p-4 md:p-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <!-- Left Column: Student Details Form -->
-            <div class="lg:col-span-1 bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-gray-200 self-start lg:sticky top-24">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-bold text-gray-800">Find Scholarships</h2>
-                    <button id="clear-form-btn" title="Clear Form" class="text-gray-500 hover:text-indigo-600 transition-colors">
-                        <i data-lucide="rotate-cw" class="w-5 h-5"></i>
-                    </button>
+        
+        <main class="container mx-auto p-4 md:p-8">
+            <!-- Finder Content -->
+            <div id="finder-content">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-fuchsia-500 tracking-tighter">Find Your Future Scholarship</h2>
+                    <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-400">Fill in your details and let our smart engine find the perfect opportunities for you.</p>
                 </div>
-                <form id="scholarship-form" class="space-y-5">
-                    
-                    <!-- Scholarship Type Filter -->
-                    <div>
-                        <label class="block text-base font-semibold text-gray-700 mb-2">Scholarship Type</label>
-                        <div class="flex items-center space-x-2 bg-gray-100 p-1 rounded-lg">
-                            <label class="flex-1 text-center">
-                                <input type="radio" name="scholarshipType" value="All" class="sr-only peer" checked>
-                                <span class="block px-4 py-2 rounded-md cursor-pointer text-sm font-medium peer-checked:bg-indigo-600 peer-checked:text-white transition-all duration-300">All</span>
-                            </label>
-                            <label class="flex-1 text-center">
-                                <input type="radio" name="scholarshipType" value="Government" class="sr-only peer">
-                                <span class="block px-4 py-2 rounded-md cursor-pointer text-sm font-medium peer-checked:bg-indigo-600 peer-checked:text-white transition-all duration-300">Government</span>
-                            </label>
-                            <label class="flex-1 text-center">
-                                <input type="radio" name="scholarshipType" value="Private" class="sr-only peer">
-                                <span class="block px-4 py-2 rounded-md cursor-pointer text-sm font-medium peer-checked:bg-indigo-600 peer-checked:text-white transition-all duration-300">Private</span>
-                            </label>
-                        </div>
-                    </div>
-                    
-                    <!-- Academic Details Section -->
-                    <div class="pt-4 border-t">
-                        <h3 class="text-lg font-semibold text-indigo-700 mb-3">Academic Details</h3>
-                        <div class="space-y-4">
-                             <div>
-                                <label for="studyLevel" class="block text-sm font-medium text-gray-700">Current Level of Study</label>
-                                <select id="studyLevel" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md transition-shadow">
-                                    <option>School (Class 1-10)</option>
-                                    <option>Higher Secondary (11-12)</option>
-                                    <option>Undergraduate</option>
-                                    <option>Postgraduate</option>
-                                    <option>PhD</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label for="fieldOfStudy" class="block text-sm font-medium text-gray-700">Field of Study</label>
-                                <input type="text" id="fieldOfStudy" placeholder="e.g., Engineering, Medical, Arts" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-indigo-500 focus:border-indigo-500 transition-shadow">
-                            </div>
-                            <div>
-                                <label for="marks" class="block text-sm font-medium text-gray-700">Latest Percentage (%)</label>
-                                <input type="number" id="marks" min="0" max="100" placeholder="e.g., 85" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-indigo-500 focus:border-indigo-500 transition-shadow" required>
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- Personal & Financial Details Section -->
-                    <div class="pt-4 border-t">
-                        <h3 class="text-lg font-semibold text-indigo-700 mb-3">Personal & Financial Details</h3>
-                        <div class="space-y-4">
+                <div class="glass-panel p-6 md:p-8 rounded-2xl mb-12">
+                     <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-gray-200">Your Profile</h2>
+                        <button id="clear-form-btn" type="button" title="Clear Form" class="text-gray-400 hover:text-fuchsia-400 transition-colors">
+                            <i data-lucide="rotate-cw" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                    <form id="scholarship-form">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <!-- Panel 1: Academics -->
                             <div>
-                                <label for="category" class="block text-sm font-medium text-gray-700">Caste Category</label>
-                                <select id="category" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md transition-shadow">
-                                    <option value="GENERAL">General</option>
-                                    <option value="OBC">OBC</option>
-                                    <option value="SC">SC</option>
-                                    <option value="ST">ST</option>
-                                    <option value="MINORITY">Minority</option>
-                                </select>
+                                <h3 class="text-lg font-bold text-purple-400 mb-4">Academic Details</h3>
+                                <div id="academic-fields-container" class="space-y-4"></div>
                             </div>
+                            <!-- Panel 2: Personal & Financial -->
                             <div>
-                                <label for="income" class="block text-sm font-medium text-gray-700">Annual Family Income (₹)</label>
-                                <input type="number" id="income" placeholder="e.g., 80000" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-indigo-500 focus:border-indigo-500 transition-shadow" required>
+                                <h3 class="text-lg font-bold text-purple-400 mb-4">Personal & Financial</h3>
+                                <div class="space-y-4">
+                                    <div><label for="category" class="block text-sm font-medium text-gray-300">Caste Category</label><select id="category" class="mt-1 block w-full pl-3 pr-10 py-2 text-base bg-gray-800/50 text-gray-200 border-gray-600 focus:outline-none focus:ring-fuchsia-500 focus:border-fuchsia-500 sm:text-sm rounded-md"><option value="GENERAL">General</option><option value="OBC">OBC</option><option value="SC">SC</option><option value="ST">ST</option><option value="MINORITY">Minority</option></select></div>
+                                    <div><label for="income" class="block text-sm font-medium text-gray-300">Annual Family Income (₹)</label><input type="number" id="income" placeholder="e.g., 80000" class="mt-1 block w-full bg-gray-800/50 text-gray-200 border-gray-600 rounded-md shadow-sm py-2 px-3 focus:ring-fuchsia-500 focus:border-fuchsia-500"></div>
+                                    <div><label for="state" class="block text-sm font-medium text-gray-300">State of Domicile</label><select id="state" class="mt-1 block w-full pl-3 pr-10 py-2 text-base bg-gray-800/50 text-gray-200 border-gray-600 focus:outline-none focus:ring-fuchsia-500 focus:border-fuchsia-500 sm:text-sm rounded-md"><option value="">Select your State</option></select></div>
+                                </div>
                             </div>
+                            <!-- Panel 3: Special Categories -->
                             <div>
-                                <label for="state" class="block text-sm font-medium text-gray-700">State of Domicile</label>
-                                <select id="state" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md transition-shadow">
-                                    <option value="">Select State</option>
-                                </select>
+                                <h3 class="text-lg font-bold text-purple-400 mb-4">Special Categories</h3>
+                                <div class="space-y-3">
+                                    <label class="flex items-center"><input type="checkbox" id="exServiceman" class="h-4 w-4 text-fuchsia-500 bg-gray-700 border-gray-600 rounded focus:ring-fuchsia-500"><span class="ml-3 text-sm text-gray-300">Ward of Ex-Servicemen</span></label>
+                                    <label class="flex items-center"><input type="checkbox" id="farmer" class="h-4 w-4 text-fuchsia-500 bg-gray-700 border-gray-600 rounded focus:ring-fuchsia-500"><span class="ml-3 text-sm text-gray-300">Agricultural Background</span></label>
+                                    <label class="flex items-center"><input type="checkbox" id="disabled" class="h-4 w-4 text-fuchsia-500 bg-gray-700 border-gray-600 rounded focus:ring-fuchsia-500"><span class="ml-3 text-sm text-gray-300">Person with Disability (PwD)</span></label>
+                                </div>
+                                <div class="mt-6">
+                                    <label class="block text-base font-semibold text-gray-300 mb-2">Scholarship Type</label>
+                                    <div class="flex items-center space-x-4 bg-gray-800/50 p-1 rounded-lg">
+                                        <label class="flex-1 text-center"><input type="radio" name="scholarshipType" value="All" class="sr-only peer" checked><span class="block px-4 py-2 rounded-md cursor-pointer text-sm font-medium peer-checked:bg-fuchsia-600 text-gray-300 peer-checked:text-white transition">All</span></label>
+                                        <label class="flex-1 text-center"><input type="radio" name="scholarshipType" value="Government" class="sr-only peer"><span class="block px-4 py-2 rounded-md cursor-pointer text-sm font-medium peer-checked:bg-fuchsia-600 text-gray-300 peer-checked:text-white transition">Govt</span></label>
+                                        <label class="flex-1 text-center"><input type="radio" name="scholarshipType" value="Private" class="sr-only peer"><span class="block px-4 py-2 rounded-md cursor-pointer text-sm font-medium peer-checked:bg-fuchsia-600 text-gray-300 peer-checked:text-white transition">Private</span></label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </form>
+                </div>
 
-                    <!-- Special Categories Section -->
-                    <div class="pt-4 border-t">
-                        <h3 class="text-lg font-semibold text-indigo-700 mb-3">Special Categories</h3>
-                        <div class="space-y-3">
-                            <label class="flex items-center cursor-pointer">
-                                <input type="checkbox" id="exServiceman" class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
-                                <span class="ml-2 text-sm text-gray-700">Ward of Ex-Servicemen / Coast Guard</span>
-                            </label>
-                             <label class="flex items-center cursor-pointer">
-                                <input type="checkbox" id="farmer" class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
-                                <span class="ml-2 text-sm text-gray-700">From an Agricultural Background</span>
-                            </label>
-                            <label class="flex items-center cursor-pointer">
-                                <input type="checkbox" id="disabled" class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
-                                <span class="ml-2 text-sm text-gray-700">Person with Disability (PwD)</span>
-                            </label>
-                        </div>
-                    </div>
 
-                </form>
+                <div class="border-t border-gray-700 pt-8">
+                    <h2 id="results-title" class="text-3xl font-bold text-gray-200 mb-6 text-center">Your Scholarship Matches</h2>
+                    <div id="results-container" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"></div>
+                </div>
             </div>
 
-            <!-- Right Column: Results -->
-            <div id="results-container" class="lg:col-span-2 space-y-6">
-                <!-- Initial state message -->
-                <div class="bg-white p-8 rounded-xl shadow-lg text-center h-full flex flex-col justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-16 w-16 text-indigo-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-                    </svg>
-                    <h3 class="mt-4 text-xl font-semibold text-gray-900">Your Scholarship Results Will Appear Here</h3>
-                    <p class="mt-1 text-gray-500">Fill in your details on the left and the results will update automatically.</p>
-                </div>
+            <!-- All Scholarships Content -->
+            <div id="all-scholarships-content" class="hidden">
+                <div class="mb-6"><h2 class="text-3xl font-bold text-gray-200">All Available Scholarships</h2><p class="text-gray-400 mt-1">Browse and search our entire database of scholarships.</p></div>
+                <div class="relative mb-6"><input type="text" id="all-scholarships-search" placeholder="Search by name, portal, or description..." class="w-full pl-10 pr-4 py-3 bg-gray-800/50 text-gray-200 border-gray-600 rounded-lg focus:ring-fuchsia-500 focus:border-fuchsia-500 transition-shadow"><div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i data-lucide="search" class="w-5 h-5 text-gray-500"></i></div></div>
+                <div id="all-scholarships-list" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"></div>
             </div>
         </main>
-        
-        <footer class="bg-white mt-12 py-6 border-t">
-            <div class="container mx-auto px-6 text-center text-gray-600">
-                <p class="text-sm">&copy; 2024 GoScholar India. All Rights Reserved. For educational purposes only.</p>
-                <p class="text-xs mt-2 font-medium">Project By: Bhavartha Talvekar, Bhumika Deshmukh, Dhanashree Borkar, Dhanashree Mohod, Dnyandeep Dhekle, Gaurav Kale</p>
-                <div class="flex justify-center items-center mt-3 space-x-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-pink-500"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-                    <a href="https://www.instagram.com/just_propane" target="_blank" class="text-sm hover:text-indigo-600 transition-colors">@just_propane</a>
-                </div>
-            </div>
-        </footer>
     </div>
-    
-    <script src="script.js"></script>
+
+    <script>
+        // --- SCHOLARSHIP DATABASE (MAXIMIZED & SPECIALIZED) ---
+        const scholarships = [
+            // --- Pre-Matric (Class 1-10) Scholarships ---
+            { type: "Government", name: "Pre-Matric Scholarships Scheme for Minorities", portal: "NSP", link: "https://scholarships.gov.in/", description: "For students from Class 1 to 10 from minority communities.", eligibility: { level: ["PreMatric"], minClass: 1, maxClass: 10, category: ["MINORITY"], income: 100000 } },
+            { type: "Government", name: "Pre-Matric Scholarship for Students with Disabilities", portal: "NSP", link: "https://scholarships.gov.in/", description: "Supports students with disabilities for education from Class 9 onwards.", eligibility: { level: ["PreMatric"], minClass: 9, maxClass: 10, isDisabled: true, income: 250000 } },
+            { type: "Government", name: "Pre-Matric Scholarship for SC Students (State-wise)", portal: "State Portals", link: "#", description: "For SC students studying in Class 9 and 10.", eligibility: { level: ["PreMatric"], minClass: 9, maxClass: 10, category: ["SC"], income: 200000 } },
+            { type: "Government", name: "National Means Cum Merit Scholarship", portal: "NSP", link: "https://scholarships.gov.in/", description: "For meritorious EWS students to prevent drop-out at Class 8.", eligibility: { level: ["PreMatric"], minClass: 9, maxClass: 9, minMarksPrev: 55, income: 350000 } },
+            { type: "Private", name: "HDFC Bank Parivartan's ECSS Programme (School)", portal: "Buddy4Study", link: "https://www.buddy4study.com/page/hdfc-bank-parivartans-ecss-programme", description: "For meritorious and needy students from Class 1 to 12.", eligibility: { level: ["PreMatric", "PostMatric"], minClass: 1, maxClass: 12, income: 250000, minMarksPrev: 55 } },
+            { type: "Government", name: "Financial Assistance for Education of the Wards of Beedi/Cine/IOMC/LSDM Workers - Pre-Matric", portal: "NSP", link: "https://scholarships.gov.in/", description: "Financial aid for children of specific categories of workers from Class 1 to 10.", eligibility: { level: ["PreMatric"], minClass: 1, maxClass: 10, income: 100000 } },
+            { type: "Private", name: "Aditya Birla Capital Scholarship for School Students", portal: "Aditya Birla", link: "#", description: "For students from Class 1 to 12 to support their education.", eligibility: { level: ["PreMatric", "PostMatric"], minClass: 1, maxClass: 12, income: 600000, minMarksPrev: 60 } },
+            { type: "Private", name: "SOF Girl Child Scholarship Scheme (GCSS)", portal: "SOF", link: "#", description: "For girl children from economically weaker sections studying in Classes 1 to 10.", eligibility: { level: ["PreMatric"], minClass: 1, maxClass: 10, minMarksPrev: 60 } },
+            { type: "Private", name: "All India Talent Search Examination (AITSE)", portal: "AITSE", link: "#", description: "A merit-based scholarship for students of classes 4 to 10.", eligibility: { level: ["PreMatric"], minClass: 4, maxClass: 10 } },
+            { type: "Private", name: "National Scholarship Exam (NSE)", portal: "NSE", link: "#", description: "A national level scholarship exam for students from Class 5 to 12.", eligibility: { level: ["PreMatric", "PostMatric"], minClass: 5, maxClass: 12 } },
+            { type: "Private", name: "BYJU's National Aptitude Test (BNAT)", portal: "BYJU's", link: "#", description: "For students from Class 4 to 10, providing up to 100% scholarship on BYJU's courses.", eligibility: { level: ["PreMatric"], minClass: 4, maxClass: 10 } },
+            { type: "Private", name: "Pramerica Spirit of Community Awards", portal: "Pramerica", link: "#", description: "Honors students in classes 6-12 who have made a positive difference through volunteer work.", eligibility: { level: ["PreMatric", "PostMatric"], minClass: 6, maxClass: 12 } },
+            { type: "Private", name: "Vidyadhan Scholarship Program", portal: "Vidyadhan", link: "#", description: "For meritorious students from economically challenged families, after 10th grade.", eligibility: { level: ["PostMatric"], income: 200000, minMarks10: 90 } },
+            { type: "Private", name: "LIC HFL Vidyadhan Scholarship", portal: "LIC HFL", link: "#", description: "For students from low-income group studying in Class 10 to Post-graduation.", eligibility: { level: ["PreMatric", "PostMatric", "UG"], income: 300000, minMarksPrev: 60 } },
+            { type: "Private", name: "Shriram Capital Scholarship", portal: "Shriram", link: "#", description: "For children of commercial transport drivers.", eligibility: { level: ["PreMatric", "PostMatric"], minClass: 9, maxClass: 12, minMarksPrev: 60 } },
+            { type: "Private", name: "STFC India Meritorious Scholarship", portal: "Shriram", link: "#", description: "For children of commercial vehicle drivers pursuing higher education.", eligibility: { level: ["PostMatric", "UG"], income: 400000, minMarks10: 75 } },
+
+            // --- Post-Matric (Class 11 onwards) Scholarships ---
+            { type: "Government", name: "Central Sector Scheme of Scholarship for College and University Students (CSSS)", portal: "NSP", link: "https://scholarships.gov.in", description: "Financial aid for meritorious students from low-income families to pursue higher education.", eligibility: { level: ["UG", "PG"], stream: ["All"], minMarks12: 80, income: 450000 } },
+            { type: "Government", name: "Prime Minister’s Scholarship Scheme for CAPF & Assam Rifles", portal: "NSP", link: "https://scholarships.gov.in", description: "Provides scholarships to wards/widows of CAPF & Assam Rifles personnel.", eligibility: { level: ["UG"], stream: ["B.E/B.Tech", "MBBS", "BDS", "Veterinary", "MBA", "MCA"], minMarks12: 60, isExServiceman: true } },
+            { type: "Government", name: "Top Class Education Scheme for SC Students", portal: "NSP", link: "https://scholarships.gov.in", description: "Helps SC students pursue studies in top institutions by covering tuition, living, and other costs.", eligibility: { level: ["UG", "PG"], stream: ["B.E/B.Tech", "MBBS", "LLB", "MBA"], category: ["SC"], income: 800000 } },
+            { type: "Government", name: "Post-Matric Scholarship for SC/ST/OBC Students", portal: "State Portals/NSP", link: "https://scholarships.gov.in/", description: "Financial assistance for post-matriculation courses.", eligibility: { level: ["PostMatric", "UG", "PG", "Doctoral"], category: ["SC", "ST", "OBC"], income: 250000 } },
+            { type: "Government", name: "Merit Cum Means Scholarship for Professional/Technical Courses", portal: "NSP", link: "#", description: "For UG and PG technical/professional courses.", eligibility: { level: ["UG", "PG"], category: ["MINORITY"], income: 250000, minMarks12: 50, stream: ["B.E/B.Tech", "M.Tech", "Architecture", "Design"] } },
+            { type: "Government", name: "Pragati Scholarship for Girls (Technical)", portal: "AICTE", link: "#", description: "For girl students admitted to AICTE approved Technical institutes.", eligibility: { level: ["UG"], income: 800000, stream: ["B.E/B.Tech"] } },
+            { type: "Government", name: "Saksham Scholarship for Specially Abled (Technical)", portal: "AICTE", link: "#", description: "For specially-abled students pursuing technical education.", eligibility: { level: ["UG"], isDisabled: true, income: 800000, stream: ["B.E/B.Tech"] } },
+            { type: "Government", name: "ONGC Scholarship", portal: "ONGC", link: "#", description: "Scholarship for SC/ST students pursuing Engineering, MBBS, MBA, or Master in Geophysics/Geology.", eligibility: { level: ["UG", "PG"], category: ["SC", "ST"], income: 450000, minMarks12: 60, stream: ["B.E/B.Tech", "MBBS", "MBA"] } },
+            { type: "Government", name: "INSPIRE Scholarship", portal: "DST", link: "#", description: "For students pursuing bachelor's and master's level courses in basic and natural sciences.", eligibility: { level: ["UG", "PG"], minMarks12: 85, stream: ["Science"] } },
+            { type: "Government", name: "Ishan Uday Scholarship for North Eastern Region", portal: "UGC", link: "#", description: "For students from NER pursuing general degree, technical and professional courses.", eligibility: { level: ["UG"], income: 450000, domicile: ["Arunachal Pradesh", "Assam", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Sikkim", "Tripura"] } },
+            { type: "Government", name: "Post-Graduate Indira Gandhi Scholarship for Single Girl Child", portal: "UGC", link: "#", description: "For single girl children pursuing non-professional PG courses.", eligibility: { level: ["PG"] } },
+            { type: "Government", name: "Post-Graduate Merit Scholarship for University Rank Holders", portal: "UGC", link: "#", description: "For 1st and 2nd rank holders in UG exams.", eligibility: { level: ["PG"] } },
+            { type: "Government", name: "Prime Minister's Research Fellowship (PMRF)", portal: "PMRF", link: "#", description: "For attracting talent for doctoral programs (PhD) in STEM and other fields.", eligibility: { level: ["Doctoral"], stream: ["Ph.D."] } },
+            { type: "Government", name: "Junior Research Fellowship (JRF)", portal: "UGC/CSIR", link: "#", description: "For candidates who qualify the UGC-NET or CSIR-UGC Test to pursue M.Phil/Ph.D.", eligibility: { level: ["Doctoral", "PostDoctoral"], stream: ["M.Phil", "Ph.D."] } },
+            { type: "Private", name: "Reliance Foundation Undergraduate Scholarships", portal: "Reliance", link: "#", description: "Supports meritorious students for any undergraduate stream.", eligibility: { level: ["UG"], income: 250000, minMarks12: 60 } },
+            { type: "Private", name: "Tata Capital Pankh Scholarship Programme", portal: "Tata Capital", link: "#", description: "Supports students from economically weaker sections for higher education.", eligibility: { level: ["PostMatric", "UG"], income: 400000, minMarks10: 60, minMarks12: 60 } },
+            { type: "Private", name: "LIC Golden Jubilee Scholarship", portal: "LIC India", link: "#", description: "For meritorious students from EWS for pursuing higher studies.", eligibility: { level: ["UG"], income: 200000, minMarks12: 60 } },
+            { type: "Private", name: "Siemens Scholarship Program", portal: "Siemens India", link: "#", description: "For meritorious engineering students from economically disadvantaged families.", eligibility: { level: ["UG"], income: 200000, minMarks12: 60, stream: ["B.E/B.Tech"] } },
+            { type: "Private", name: "Amazon Future Engineer Scholarship", portal: "Amazon", link: "#", description: "For meritorious girl students interested in pursuing a career in computer science.", eligibility: { level: ["UG"], income: 300000, minMarks12: 70, stream: ["B.E/B.Tech", "Computer Science"] } },
+            { type: "Private", name: "Rolls-Royce Unnati Scholarship for Women Engineering Students", portal: "Rolls-Royce", link: "#", description: "Supports women engineering students in their 2nd or 3rd year of engineering.", eligibility: { level: ["UG"], minCGPA: 6.0, stream: ["B.E/B.Tech"], minSemester: 3 } },
+            { type: "Private", name: "Nationwide Education and Scholarship Test (NEST)", portal: "NEST", link: "#", description: "For students pursuing degree courses in Science, Engineering, and Medical fields.", eligibility: { level: ["UG"], stream: ["Science", "B.E/B.Tech", "MBBS", "BDS"] } },
+            { type: "Private", name: "IDFC FIRST Bank MBA Scholarship", portal: "IDFC FIRST Bank", link: "#", description: "For students enrolled in the first year of a two-year, full-time MBA program.", eligibility: { level: ["PG"], income: 600000, stream: ["MBA"] } },
+            { type: "Private", name: "Sitaram Jindal Foundation Scholarship", portal: "SJF", link: "#", description: "For students from Class 11 to PG courses.", eligibility: { level: ["PostMatric", "UG"], income: 250000, minMarks10: 60, stream: ["B.Ed", "Arts", "Science", "Commerce"] } },
+            { type: "Private", name: "Kotak Kanya Scholarship", portal: "Kotak Education", link: "#", description: "For meritorious girl students from underprivileged sections to pursue professional graduation.", eligibility: { level: ["UG"], income: 300000, minMarks12: 75, stream: ["B.E/B.Tech", "MBBS", "Architecture", "LLB"] } },
+            { type: "Private", name: "Indian Oil Academic Scholarship", portal: "IOCL", link: "#", description: "For students pursuing 10+, ITI, Engineering, MBBS & MBA courses.", eligibility: { level: ["PostMatric", "UG", "PG"], stream: ["B.E/B.Tech", "MBBS", "MBA"], income: 100000, minMarks12: 65 } },
+            { type: "Private", name: "Google Generation Scholarship for Women in Computer Science", portal: "Google", link: "#", description: "For women pursuing computer science degrees.", eligibility: { level: ["UG"], stream: ["B.E/B.Tech", "Computer Science"] } },
+            { type: "Private", name: "Wipro Santoor Women’s Scholarship", portal: "Wipro", link: "#", description: "For underprivileged girl students who wish to pursue higher education after Grade 12.", eligibility: { level: ["UG"], minMarks12: 60 } },
+            { type: "Private", name: "IET India Scholarship Awards", portal: "IET India", link: "#", description: "For undergraduate students of engineering and technology.", eligibility: { level: ["UG"], stream: ["B.E/B.Tech"], minCGPA: 6.0 } },
+            { type: "Private", name: "Foundation for Excellence Scholarship (FFE)", portal: "FFE", link: "#", description: "For first-year B.E./B.Tech/MBBS students.", eligibility: { level: ["UG"], stream: ["B.E/B.Tech", "MBBS"], income: 250000, minMarks12: 70 } },
+            { type: "Private", name: "J.N. Tata Endowment Loan Scholarship", portal: "Tata Trusts", link: "#", description: "A prestigious loan scholarship for higher studies abroad.", eligibility: { level: ["PG", "Doctoral"] } },
+            { type: "Private", name: "K.C. Mahindra Scholarships for Post-Graduate Studies Abroad", portal: "Mahindra", link: "#", description: "Interest-free loan scholarships for PG studies in various fields abroad.", eligibility: { level: ["PG"] } },
+            { type: "Private", name: "Inlaks Shivdasani Foundation Scholarships", portal: "Inlaks", link: "#", description: "For young people with exceptional talent to study at top-rated institutions in the UK, Europe and USA.", eligibility: { level: ["PG", "Doctoral"] } },
+            { type: "Private", name: "Scholarship Programme for Diaspora Children (SPDC)", portal: "SPDC", link: "#", description: "For children of PIOs/NRIs to pursue Undergraduate courses in Indian Universities/Institutes.", eligibility: { level: ["UG"] } },
+            { type: "Private", name: "Fair and Lovely Foundation Scholarship", portal: "Glow & Lovely", link: "#", description: "For women pursuing graduation, post-graduation or PhD studies.", eligibility: { level: ["UG", "PG", "Doctoral"], minMarks12: 60 } },
+            { type: "Private", name: "GAIL Scholarship", portal: "GAIL", link: "#", description: "For SC/ST/OBC (NCL) students pursuing full-time Bachelor’s Degree in Engineering.", eligibility: { level: ["UG"], stream: ["B.E/B.Tech"], category: ["SC", "ST", "OBC"] } },
+            { type: "Private", name: "DLF Foundation Scholarship", portal: "DLF Foundation", link: "#", description: "For meritorious students to pursue professional courses.", eligibility: { level: ["UG"], income: 250000, minMarks12: 85 } },
+
+            // --- State-Specific Scholarships ---
+            { type: "Government", name: "Rajarshi Chhatrapati Shahu Maharaj Scholarship (Maharashtra)", portal: "MahaDBT", link: "#", description: "Tuition and exam fee concessions for EWS students in Maharashtra.", eligibility: { level: ["UG"], domicile: ["Maharashtra"], category: ["GENERAL"], income: 800000, minMarks12: 60 } },
+            { type: "Government", name: "Dr. Punjabrao Deshmukh Hostel Maintenance Allowance (Maharashtra)", portal: "MahaDBT", link: "#", description: "Hostel allowance for children of marginal farmers.", eligibility: { level: ["UG"], domicile: ["Maharashtra"], income: 800000, isFarmer: true } },
+            { type: "Government", name: "Swami Vivekananda Scholarship (West Bengal)", portal: "SVMCM", link: "#", description: "For meritorious and economically backward students of West Bengal.", eligibility: { level: ["PostMatric", "UG"], domicile: ["West Bengal"], income: 250000, minMarks10: 60, minMarks12: 60 } },
+            { type: "Private", name: "G.P. Birla Educational Foundation Scholarship", portal: "GP Birla", link: "#", description: "For meritorious students from West Bengal for their undergraduate studies.", eligibility: { level: ["UG"], domicile: ["West Bengal"], income: 300000, minMarks12: 80 } },
+            { type: "Government", name: "Mukhya Mantri Medhavi Vidyarthi Yojana (Madhya Pradesh)", portal: "State Portal", link: "#", description: "For meritorious students with high marks in board exams.", eligibility: { level: ["UG"], domicile: ["Madhya Pradesh"], income: 600000, minMarks12: 75 } },
+            { type: "Government", name: "Post-Matric Scholarship (Delhi)", portal: "E-district Delhi", link: "https://edistrict.delhigovt.nic.in/", description: "For SC/ST/OBC/Minority students of Delhi.", eligibility: { level: ["PostMatric", "UG"], domicile: ["Delhi"], category: ["SC", "ST", "OBC", "MINORITY"], income: 300000 } },
+            { type: "Government", name: "AP Jagananna Vidya Deevena Scheme (Andhra Pradesh)", portal: "State Portal", link: "#", description: "Provides complete fee reimbursement for students pursuing post-matric courses.", eligibility: { level: ["UG", "PG"], domicile: ["Andhra Pradesh"], income: 250000 } },
+            { type: "Government", name: "Chief Minister’s Scholarship Scheme (Assam)", portal: "State Portal", link: "#", description: "Financial assistance to meritorious students.", eligibility: { level: ["UG"], domicile: ["Assam"], minMarks12: 75 } },
+            { type: "Government", name: "Digital Gujarat Scholarship (Gujarat)", portal: "Digital Gujarat", link: "#", description: "A state portal for various scholarships for SC/ST/OBC and other reserved categories.", eligibility: { level: ["PreMatric", "PostMatric", "UG"], domicile: ["Gujarat"] } },
+            { type: "Government", name: "MYSY - Mukhyamantri Yuva Swavalamban Yojana (Gujarat)", portal: "State Portal", link: "#", description: "For meritorious students for higher education.", eligibility: { level: ["UG"], domicile: ["Gujarat"], income: 600000, minMarks12: 80 } },
+            { type: "Government", name: "e-grantz Scholarship (Kerala)", portal: "e-grantz", link: "#", description: "For students of SC, ST, OEC and other backward communities.", eligibility: { level: ["PostMatric", "UG"], domicile: ["Kerala"], category: ["SC", "ST"] } },
+            { type: "Government", name: "Post-Matric Scholarship (Rajasthan)", portal: "SJE Rajasthan", link: "#", description: "For SC/ST/OBC students of Rajasthan.", eligibility: { level: ["PostMatric", "UG"], domicile: ["Rajasthan"], category: ["SC", "ST", "OBC"], income: 250000 } },
+            { type: "Government", name: "UP Scholarship (Uttar Pradesh)", portal: "Saksham", link: "#", description: "A comprehensive portal for pre-matric and post-matric scholarships in UP.", eligibility: { level: ["PreMatric", "PostMatric", "UG"], domicile: ["Uttar Pradesh"] } },
+            { type: "Government", name: "PRERANA Post-Matric Scholarship (Odisha)", portal: "PRERANA", link: "#", description: "For ST/SC/OBC/SEBC/EBC communities of Odisha.", eligibility: { level: ["PostMatric", "UG"], domicile: ["Odisha"], category: ["SC", "ST", "OBC"] } }
+        ];
+
+        // --- STATES LIST ---
+        const states = ["Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal", "Andaman and Nicobar Islands", "Chandigarh", "Dadra and Nagar Haveli and Daman and Diu", "Delhi", "Jammu and Kashmir", "Ladakh", "Lakshadweep", "Puducherry"];
+
+        // --- UTILITY: DEBOUNCE FUNCTION ---
+        function debounce(func, delay = 400) { let timeout; return (...args) => { clearTimeout(timeout); timeout = setTimeout(() => { func.apply(this, args); }, delay); }; }
+
+        // --- SCRIPT LOGIC ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginForm = document.getElementById('login-form');
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                // Login check is bypassed for testing purposes.
+                document.getElementById('login-overlay').classList.add('hidden');
+                document.getElementById('main-content').classList.remove('hidden');
+                initializeApp(); 
+            });
+        });
+
+        function initializeApp() {
+            const stateSelect = document.getElementById('state');
+            if (stateSelect.options.length <= 1) { states.forEach(state => stateSelect.add(new Option(state, state))); }
+            const form = document.getElementById('scholarship-form');
+            
+            const debouncedFind = debounce(findScholarships);
+            form.addEventListener('input', (e) => {
+                if(e.target.id === 'studyLevel' || e.target.id === 'fieldOfStudy') {
+                    updateAcademicFields();
+                }
+                debouncedFind();
+            });
+
+            document.getElementById('clear-form-btn').addEventListener('click', () => {
+                form.reset();
+                updateAcademicFields();
+                form.dispatchEvent(new Event('input')); 
+            });
+            
+            setupTabs();
+            updateAcademicFields(); 
+            findScholarships();
+            displayAllScholarships(); 
+            lucide.createIcons();
+        }
+
+        function updateAcademicFields() {
+            const container = document.getElementById('academic-fields-container');
+            let currentLevel = container.querySelector('#studyLevel')?.value || 'UG';
+            let currentField = container.querySelector('#fieldOfStudy')?.value;
+
+            container.innerHTML = ''; 
+
+            const levelSelectHTML = `<div class="dynamic-field"><label for="studyLevel" class="block text-sm font-medium text-gray-300">Current Level of Study</label><select id="studyLevel" class="mt-1 block w-full pl-3 pr-10 py-2 text-base bg-gray-800/50 text-gray-200 border-gray-600 focus:outline-none focus:ring-fuchsia-500 focus:border-fuchsia-500 sm:text-sm rounded-md">
+                <option value="PreMatric">Pre-Matric (Nursery-10)</option>
+                <option value="PostMatric">Post-Matric (11-12)</option>
+                <option value="UG">Undergraduate (UG)</option>
+                <option value="PG">Postgraduate (PG)</option>
+                <option value="Doctoral">Doctoral (Ph.D.)</option>
+                <option value="PostDoctoral">Post-Doctoral / Research</option>
+            </select></div>`;
+            container.insertAdjacentHTML('beforeend', levelSelectHTML);
+            const levelSelect = container.querySelector('#studyLevel');
+            levelSelect.value = currentLevel;
+
+            const fieldGroups = {
+                UG: {
+                    "General Education": ["BA", "BSc", "B.Com", "Humanities"],
+                    "Technical / Professional": ["B.E/B.Tech", "Architecture", "Design"],
+                    "Medical & Health": ["MBBS", "BDS", "Nursing", "Pharmacy", "Ayurveda", "Homeopathy"],
+                    "Management / IT": ["BBA", "BCA", "Computer Science"],
+                    "Agriculture & Allied": ["B.Sc. Agri", "Veterinary", "Fisheries"],
+                    "Law & Education": ["LLB", "B.Ed"]
+                },
+                PG: {
+                    "General Education": ["MA", "MSc", "M.Com"],
+                    "Technical / Professional": ["M.Tech"],
+                    "Medical & Health": ["MD", "MS"],
+                    "Management / IT": ["MBA", "MCA", "Data Science"],
+                    "Agriculture & Allied": ["M.Sc. Agri"],
+                    "Law & Education": ["LLM", "M.Ed"]
+                },
+                Doctoral: { "Research Fields": ["Ph.D.", "M.Phil"] },
+                PostDoctoral: { "Research Fields": ["Post-Doctoral"] }
+            };
+
+            let fieldOptions = '';
+            let fieldDisabled = false;
+            
+            if (currentLevel === 'PreMatric') {
+                fieldDisabled = true;
+                fieldOptions = `<option value="General">General</option>`;
+            } else if (currentLevel === 'PostMatric') {
+                fieldOptions = `<option value="Science">Science</option><option value="Commerce">Commerce</option><option value="Arts">Arts</option>`;
+            } else if (fieldGroups[currentLevel]) {
+                 const relevantGroups = fieldGroups[currentLevel];
+                 for (const group in relevantGroups) {
+                     fieldOptions += `<optgroup label="${group}">`;
+                     relevantGroups[group].forEach(opt => fieldOptions += `<option value="${opt}">${opt}</option>`);
+                     fieldOptions += `</optgroup>`;
+                 }
+            }
+
+            const fieldSelectHTML = `<div class="dynamic-field"><label for="fieldOfStudy" class="block text-sm font-medium text-gray-300">Field of Study / Stream</label><select id="fieldOfStudy" class="mt-1 block w-full pl-3 pr-10 py-2 text-base bg-gray-800/50 text-gray-200 border-gray-600 focus:outline-none focus:ring-fuchsia-500 focus:border-fuchsia-500 sm:text-sm rounded-md" ${fieldDisabled ? 'disabled' : ''}>${fieldOptions}</select></div>`;
+            container.insertAdjacentHTML('beforeend', fieldSelectHTML);
+            const fieldSelect = container.querySelector('#fieldOfStudy');
+            if (currentField && Array.from(fieldSelect.options).some(o => o.value === currentField)) {
+                fieldSelect.value = currentField;
+            } else if (!fieldDisabled) {
+                fieldSelect.selectedIndex = 0;
+            }
+            currentField = fieldSelect.value;
+
+            const createInputHTML = (id, label, type = 'number', placeholder = 'e.g., 85') => `<div class="dynamic-field"><label for="${id}" class="block text-sm font-medium text-gray-300">${label}</label><input type="${type}" id="${id}" min="0" ${type === 'number' && id !== 'cgpa' ? 'max="100"' : ''} ${id === 'cgpa' ? 'max="10"' : ''} placeholder="${placeholder}" class="mt-1 block w-full bg-gray-800/50 text-gray-200 border-gray-600 rounded-md shadow-sm py-2 px-3 focus:ring-fuchsia-500 focus:border-fuchsia-500"></div>`;
+            const createSelectHTML = (id, label, options) => `<div class="dynamic-field"><label for="${id}" class="block text-sm font-medium text-gray-300">${label}</label><select id="${id}" class="mt-1 block w-full pl-3 pr-10 py-2 text-base bg-gray-800/50 text-gray-200 border-gray-600 focus:outline-none focus:ring-fuchsia-500 focus:border-fuchsia-500 sm:text-sm rounded-md">${options}</select></div>`;
+
+            let specificFieldsHTML = '';
+            
+            if (['PostMatric', 'UG', 'PG', 'Doctoral', 'PostDoctoral'].includes(currentLevel)) {
+                specificFieldsHTML += createInputHTML('marks10', '10th Percentage (%)');
+            }
+            if (['UG', 'PG', 'Doctoral', 'PostDoctoral'].includes(currentLevel)) {
+                specificFieldsHTML += createInputHTML('marks12', '12th Percentage (%)');
+            }
+            if (['PG', 'Doctoral', 'PostDoctoral'].includes(currentLevel)) {
+                specificFieldsHTML += createInputHTML('marksUG', 'Undergraduate CGPA / Percentage');
+            }
+             if (['Doctoral', 'PostDoctoral'].includes(currentLevel)) {
+                specificFieldsHTML += createInputHTML('marksPG', 'Postgraduate Percentage (%)');
+            }
+            
+            if (currentLevel === 'PreMatric') {
+                const classOptions = Array.from({length: 10}, (_, i) => `<option value="${i + 1}">${i + 1}</option>`).join('');
+                specificFieldsHTML += createSelectHTML('currentClass', 'Current Class', classOptions);
+                specificFieldsHTML += createInputHTML('marksPrev', 'Previous Class Percentage (%)');
+            } else if (currentLevel === 'UG') {
+                const technicalStreams = ["B.E/B.Tech"];
+                if (technicalStreams.includes(currentField)) {
+                    const semOptions = Array.from({length: 8}, (_, i) => `<option value="${i + 1}">Semester ${i + 1}</option>`).join('');
+                    specificFieldsHTML += createSelectHTML('currentSemester', 'Current Semester', semOptions);
+                    specificFieldsHTML += createInputHTML('cgpa', 'Previous Semester CGPA (out of 10)', 'number', 'e.g., 8.5');
+                }
+            }
+
+            container.insertAdjacentHTML('beforeend', specificFieldsHTML);
+        }
+
+        function setupTabs() {
+            const tabFinder = document.getElementById('tab-finder');
+            const tabAll = document.getElementById('tab-all');
+            const finderContent = document.getElementById('finder-content');
+            const allScholarshipsContent = document.getElementById('all-scholarships-content');
+            tabFinder.addEventListener('click', () => {
+                tabFinder.classList.add('bg-gray-700/50', 'text-gray-200');
+                tabFinder.classList.remove('text-gray-400', 'hover:bg-gray-700/50', 'hover:text-gray-200');
+                tabAll.classList.add('text-gray-400', 'hover:bg-gray-700/50', 'hover:text-gray-200');
+                tabAll.classList.remove('bg-gray-700/50', 'text-gray-200');
+                finderContent.style.display = 'block';
+                allScholarshipsContent.style.display = 'none';
+            });
+            tabAll.addEventListener('click', () => {
+                tabAll.classList.add('bg-gray-700/50', 'text-gray-200');
+                tabAll.classList.remove('text-gray-400', 'hover:bg-gray-700/50', 'hover:text-gray-200');
+                tabFinder.classList.add('text-gray-400', 'hover:bg-gray-700/50', 'hover:text-gray-200');
+                tabFinder.classList.remove('bg-gray-700/50', 'text-gray-200');
+                allScholarshipsContent.style.display = 'block';
+                finderContent.style.display = 'none';
+            });
+            const searchInput = document.getElementById('all-scholarships-search');
+            searchInput.addEventListener('input', debounce(() => displayAllScholarships(searchInput.value), 300));
+            allScholarshipsContent.style.display = 'none';
+        }
+
+        function calculateMatchScore(scholarship, student) {
+            const e = scholarship.eligibility;
+            
+            if (e.level && !e.level.includes(student.level)) return 0;
+            if (student.scholarshipType !== 'All' && scholarship.type !== student.scholarshipType) return 0;
+            if (e.income && student.income > 0 && e.income < student.income) return 0;
+            if (e.category && !e.category.includes(student.category)) return 0;
+            if (e.stream && !e.stream.includes(student.stream) && !e.stream.includes("All")) return 0;
+            if (e.minClass && student.currentClass > 0 && e.minClass > student.currentClass) return 0;
+            if (e.maxClass && student.currentClass > 0 && e.maxClass < student.currentClass) return 0;
+            if (e.minMarksPrev && student.marksPrev > 0 && e.minMarksPrev > student.marksPrev) return 0;
+            if (e.minMarks10 && student.marks10 > 0 && e.minMarks10 > student.marks10) return 0;
+            if (e.minMarks12 && student.marks12 > 0 && e.minMarks12 > student.marks12) return 0;
+            if (e.minMarksUG && student.marksUG > 0 && e.minMarksUG > student.marksUG) return 0;
+            if (e.minMarksPG && student.marksPG > 0 && e.minMarksPG > student.marksPG) return 0;
+            if (e.minCGPA && student.cgpa > 0 && e.minCGPA > student.cgpa) return 0;
+            if (e.minSemester && student.currentSemester > 0 && e.minSemester > student.currentSemester) return 0;
+            if (e.domicile && student.domicile && !e.domicile.includes(student.domicile)) return 0;
+            if (e.isDisabled && !student.isDisabled) return 0;
+            if (e.isExServiceman && !student.isExServiceman) return 0;
+            if (e.isFarmer && !student.isFarmer) return 0;
+
+            let score = 1;
+            if (e.domicile && e.domicile.includes(student.domicile)) score += 5;
+            if (e.stream && e.stream.includes(student.stream)) score += 5;
+            if (e.isDisabled && student.isDisabled) score += 4;
+            if (e.isExServiceman && student.isExServiceman) score += 4;
+            if (e.isFarmer && student.isFarmer) score += 4;
+            if (e.category && e.category.includes(student.category) && e.category.length === 1) score += 2;
+            if (e.minMarks12 && student.marks12 > (e.minMarks12 + 15)) score += 2;
+            if (e.minCGPA && student.cgpa > (e.minCGPA + 1.5)) score += 2;
+
+            return score;
+        }
+
+        function findScholarships() {
+            const student = {
+                level: document.getElementById('studyLevel')?.value,
+                stream: document.getElementById('fieldOfStudy')?.value,
+                currentClass: parseInt(document.getElementById('currentClass')?.value, 10) || 0,
+                currentSemester: parseInt(document.getElementById('currentSemester')?.value, 10) || 0,
+                marksPrev: parseInt(document.getElementById('marksPrev')?.value, 10) || 0,
+                marks10: parseInt(document.getElementById('marks10')?.value, 10) || 0,
+                marks12: parseInt(document.getElementById('marks12')?.value, 10) || 0,
+                marksUG: parseInt(document.getElementById('marksUG')?.value, 10) || 0,
+                marksPG: parseInt(document.getElementById('marksPG')?.value, 10) || 0,
+                cgpa: parseFloat(document.getElementById('cgpa')?.value) || 0,
+                scholarshipType: document.querySelector('input[name="scholarshipType"]:checked')?.value || 'All',
+                category: document.getElementById('category').value,
+                income: parseInt(document.getElementById('income').value, 10) || 0,
+                domicile: document.getElementById('state').value,
+                isExServiceman: document.getElementById('exServiceman').checked,
+                isFarmer: document.getElementById('farmer').checked,
+                isDisabled: document.getElementById('disabled').checked
+            };
+
+            const scoredScholarships = scholarships
+                .map(s => ({ ...s, matchScore: calculateMatchScore(s, student) }))
+                .filter(s => s.matchScore > 0);
+            
+            scoredScholarships.sort((a, b) => b.matchScore - a.matchScore);
+
+            displayResults(scoredScholarships, student);
+        }
+
+        function displayResults(results, student) {
+            const container = document.getElementById('results-container');
+            const title = document.getElementById('results-title');
+            container.innerHTML = ''; 
+            
+            const hasRequiredInput = student.income > 0 || student.marksPrev > 0 || student.marks10 > 0 || student.marks12 > 0 || student.marksUG > 0 || student.marksPG > 0 || student.cgpa > 0;
+            if (!hasRequiredInput) {
+                title.innerHTML = 'Start by filling your details';
+                container.innerHTML = `<div class="glass-panel p-8 rounded-2xl text-center h-full flex flex-col justify-center"><i data-lucide="edit-3" class="mx-auto h-16 w-16 text-purple-400" stroke-width="1"></i><h3 class="mt-4 text-xl font-semibold text-gray-200">Ready to find scholarships?</h3><p class="mt-1 text-gray-400">Please fill your academic and financial details to start.</p></div>`;
+                lucide.createIcons();
+                return;
+            }
+            
+            title.innerHTML = `Showing <span class="text-fuchsia-400">${results.length}</span> Matching Scholarships`;
+
+            if (results.length === 0) {
+                container.innerHTML = `<div class="glass-panel p-8 rounded-2xl text-center result-card" style="animation: card-fade-in 0.5s ease-out forwards;"><i data-lucide="search-x" class="mx-auto h-12 w-12 text-red-400" stroke-width="1.5"></i><h3 class="mt-4 text-xl font-semibold text-gray-200">No Matching Scholarships Found</h3><p class="mt-1 text-gray-400">Based on the provided details, we couldn't find any direct matches. Try adjusting the criteria.</p></div>`;
+                lucide.createIcons();
+                return;
+            }
+            const maxScore = results.length > 0 ? results[0].matchScore : 0;
+            results.forEach((s, index) => container.appendChild(createScholarshipCard(s, index, s.matchScore >= maxScore && maxScore > 5)));
+            lucide.createIcons();
+        }
+        
+        function createScholarshipCard(s, index, isTopMatch = false) {
+            const card = document.createElement('div');
+            card.className = 'relative glass-panel p-6 rounded-2xl result-card';
+            card.style.animation = `card-fade-in 0.5s ease-out ${index * 100}ms forwards`;
+            
+            const typeClass = s.type.toLowerCase() === 'private' ? 'tag-private' : 'tag-government';
+            const typeTag = `<span class="tag ${typeClass}">${s.type}</span>`;
+            const topMatchBadge = isTopMatch ? `<div class="top-match-badge"><i data-lucide="star" class="inline-block w-3 h-3 -mt-0.5"></i> Top Match</div>` : '';
+
+            const eligibilityItems = [];
+            if(s.eligibility.stream && s.eligibility.stream[0] !== 'All') eligibilityItems.push(`<li>Stream: <strong>${s.eligibility.stream.join(', ')}</strong></li>`);
+            if(s.eligibility.minClass && s.eligibility.maxClass) eligibilityItems.push(`<li>For Classes: <strong>${s.eligibility.minClass} - ${s.eligibility.maxClass}</strong></li>`);
+            if(s.eligibility.category) eligibilityItems.push(`<li>Category: <strong>${s.eligibility.category.join(', ')}</strong></li>`);
+            if(s.eligibility.income) eligibilityItems.push(`<li>Family Income below: <strong>₹${s.eligibility.income.toLocaleString('en-IN')}</strong></li>`);
+            if(s.eligibility.minMarksPrev) eligibilityItems.push(`<li>Min Previous Class Marks: <strong>${s.eligibility.minMarksPrev}%</strong></li>`);
+            if(s.eligibility.minMarks10) eligibilityItems.push(`<li>Min 10th Marks: <strong>${s.eligibility.minMarks10}%</strong></li>`);
+            if(s.eligibility.minMarks12) eligibilityItems.push(`<li>Min 12th Marks: <strong>${s.eligibility.minMarks12}%</strong></li>`);
+            if(s.eligibility.minMarksUG) eligibilityItems.push(`<li>Min UG Marks: <strong>${s.eligibility.minMarksUG}%</strong></li>`);
+            if(s.eligibility.minMarksPG) eligibilityItems.push(`<li>Min PG Marks: <strong>${s.eligibility.minMarksPG}%</strong></li>`);
+            if(s.eligibility.minCGPA) eligibilityItems.push(`<li>Min CGPA: <strong>${s.eligibility.minCGPA}</strong></li>`);
+            if(s.eligibility.domicile) eligibilityItems.push(`<li>Domicile: <strong>${s.eligibility.domicile.join(', ')}</strong></li>`);
+
+            card.innerHTML = `
+                ${topMatchBadge}
+                <div class="flex justify-between items-start"><h3 class="text-xl font-bold text-purple-300 pr-4">${s.name}</h3>${typeTag}</div>
+                <p class="text-sm font-medium text-gray-400 mt-1 mb-3">Portal: ${s.portal}</p>
+                <p class="text-gray-300 mb-4 text-sm">${s.description}</p>
+                <div class="border-t border-gray-700 pt-4"><h4 class="font-semibold text-gray-200 mb-2">Key Eligibility:</h4><ul class="list-disc list-inside text-sm text-gray-300 space-y-1">
+                    ${eligibilityItems.join('')}
+                </ul></div>
+                <div class="mt-5"><a href="${s.link}" target="_blank" class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-fuchsia-600 hover:bg-fuchsia-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-fuchsia-500 focus:ring-offset-gray-800 transition-all transform hover:-translate-y-0.5">Visit Portal <i data-lucide="arrow-right" class="ml-2 h-4 w-4"></i></a></div>`;
+            return card;
+        }
+        
+         function displayAllScholarships(searchText = "") {
+            const container = document.getElementById('all-scholarships-list');
+            container.innerHTML = '';
+            const lowercasedSearch = searchText.toLowerCase();
+            const filteredScholarships = scholarships.filter(s => s.name.toLowerCase().includes(lowercasedSearch) || s.portal.toLowerCase().includes(lowercasedSearch) || s.description.toLowerCase().includes(lowercasedSearch));
+            if (filteredScholarships.length === 0) {
+                 container.innerHTML = `<div class="md-col-span-2 xl-col-span-3 text-center py-10"><p class="text-gray-500">No scholarships found for "${searchText}"</p></div>`;
+                 return;
+            }
+            filteredScholarships.forEach((s, index) => container.appendChild(createScholarshipCard(s, index)));
+            lucide.createIcons();
+        }
+    </script>
 </body>
 </html>
 
