@@ -213,7 +213,7 @@
             // --- NEW: Fetch scholarships from your live backend FIRST ---
             try {
                 // !!! IMPORTANT: REPLACE THIS URL with the one Wrangler gave you !!!
-                const response = await fetch("https://goscholar-backend.your-subdomain.workers.dev/api/scholarships");
+                const response = await fetch("https://goscholar-backend.propane.workers.dev");
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
@@ -550,4 +550,5 @@
     </script>
 </body>
 </html>
+
 
