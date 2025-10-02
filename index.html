@@ -368,7 +368,7 @@
         // This key MUST be from a NEW Google Cloud Project where you have
         // 1. Enabled the "Vertex AI API"
         // 2. Linked a billing account
-        const GEMINI_API_KEY = "AIzaSyDwjYKdVbOV_UnmLVQfLJGHHntXPT56RMg"; 
+        const GEMINI_API_KEY = "AQ.Ab8RN6Jv5w9PrYFI2sowlUBo66c9yMuC8gzY3IPYYrBGzksGZQ"; 
 
         // --- UTILITY ---
         const debounce = (func, delay = 400) => { let timeout; return (...args) => { clearTimeout(timeout); timeout = setTimeout(() => { func.apply(this, args); }, delay); }; };
@@ -565,7 +565,7 @@
 
             const prompt = `Please provide a concise, easy-to-read summary for the following scholarship. Focus on the main eligibility criteria, what the scholarship offers, and who it's for. Format the summary in clear, simple language. Here are the details:\n\nName: ${scholarship.name}\nDescription: ${scholarship.description}\nEligibility: ${JSON.stringify(scholarship.eligibility, null, 2)}`;
 
-            const apiUrl = `https://generativelanguage.googleapis.com/v1/models/gemini-pro-vision:generateContent?key=${GEMINI_API_KEY}`;
+            const apiUrl = `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`;
             
             try {
                 const response = await fetch(apiUrl, {
