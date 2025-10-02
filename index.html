@@ -3,38 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GoScholar India - The Ultimate Scholarship Finder</title>
+    <title>GoScholar India - Refined Dark Glassmorphism UI</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        /* Base Styling & Font */
         :root {
-            --bg-midnight-blue: #111827;
-            --accent-cyan: #22d3ee;
-            --deep-navy: #1e3a8a;
+            --bg-main: #0a0f1d;
+            --accent-color: #8b5cf6; /* Vibrant Purple */
+            --accent-color-hover: #a78bfa;
+            --accent-glow: rgba(139, 92, 246, 0.3);
+            --text-primary: #e6edf3;
+            --text-secondary: #8d96a0;
+            --border-color: rgba(255, 255, 255, 0.1);
         }
+
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--bg-midnight-blue);
-            color: #d1d5db; /* gray-300 */
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
         
         /* --- Animated Gradient Background --- */
         .main-container::before {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, var(--deep-navy), var(--bg-midnight-blue), #312e81, var(--deep-navy));
-            background-size: 400% 400%;
-            animation: gradient-flow 20s ease infinite;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, var(--accent-color), #22d3ee, #db2777);
+            background-size: 300% 300%;
+            animation: gradient-flow 25s ease infinite;
             filter: blur(120px);
-            opacity: 0.6;
+            opacity: 0.15;
             z-index: -1;
-            will-change: background-position;
+            transition: opacity 0.5s ease;
         }
 
         @keyframes gradient-flow {
@@ -43,121 +48,271 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* --- Glassmorphism Effect --- */
-        .glass-panel {
-            background: rgba(31, 41, 55, 0.6); /* gray-800 with opacity */
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        h1, h2, h3, h4, .font-heading {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
         }
 
-        /* Animations & Transitions */
-        @keyframes fade-in-up { from { opacity: 0; transform: translateY(20px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        @keyframes fade-in-up { 
+            from { opacity: 0; transform: translateY(15px) scale(0.98); } 
+            to { opacity: 1; transform: translateY(0) scale(1); } 
+        }
         .animate-fade-in-up { animation: fade-in-up 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
-        @keyframes card-fade-in { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .dynamic-field { animation: card-fade-in 0.4s ease-out forwards; }
 
-        /* Scholarship Type Tags */
-        .tag { @apply inline-block px-3 py-1 text-xs font-semibold rounded-full border; }
-        .tag-government { @apply bg-cyan-500/10 text-cyan-300 border-cyan-500/20; }
-        .tag-private { @apply bg-teal-500/10 text-teal-300 border-teal-500/20; }
+        @keyframes fade-in {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
         
-        /* --- Card Design --- */
+        /* --- Glassmorphism Panels --- */
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-input {
+            background-color: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            transition: all 0.2s ease;
+        }
+        .form-input:focus, .form-input:focus-within {
+             outline: none;
+             border-color: var(--accent-color);
+             box-shadow: 0 0 0 3px var(--accent-glow);
+             background-color: rgba(30, 41, 59, 0.8);
+        }
+        .form-checkbox {
+            color: var(--accent-color);
+            background: transparent;
+            border-color: var(--border-color);
+        }
+        .form-checkbox:checked { 
+            background-color: var(--accent-color); 
+            border-color: var(--accent-color);
+        }
+
         .result-card {
             opacity: 0;
             transform: translateY(20px);
-            transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-        .result-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            border-color: rgba(34, 211, 238, 0.4); /* Cyan with opacity */
-            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.2), 0 8px 10px -6px rgb(0 0 0 / 0.2);
+            transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                        box-shadow 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        background 0.3s ease, border-color 0.3s ease;
         }
 
-        /* Scrollbar styling */
-        ::-webkit-scrollbar { width: 10px; }
-        ::-webkit-scrollbar-track { background: var(--bg-midnight-blue); }
-        ::-webkit-scrollbar-thumb { background: #374151; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #4b5563; }
+        .result-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
+            background: rgba(30, 41, 59, 0.75);
+            border-color: rgba(139, 92, 246, 0.5);
+        }
+        .top-match-badge {
+            background: var(--accent-color);
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 99px;
+            text-transform: uppercase;
+        }
+
+        .primary-button {
+            background-color: var(--accent-color);
+            color: white;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.2s ease-in-out;
+        }
+        .primary-button:hover {
+             background-color: var(--accent-color-hover);
+             transform: translateY(-2px);
+             box-shadow: 0 4px 15px var(--accent-glow);
+        }
+        .primary-button:active {
+            transform: translateY(0) scale(0.98);
+        }
+        
+        .secondary-button {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.2s ease-in-out;
+        }
+        .secondary-button:hover {
+             color: var(--text-primary);
+             background-color: rgba(255, 255, 255, 0.1);
+             border-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .summary-button {
+             background-color: rgba(139, 92, 246, 0.1);
+             color: var(--accent-color-hover);
+        }
+        .summary-button:hover {
+             background-color: rgba(139, 92, 246, 0.2);
+             color: white;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-main); }
+        ::-webkit-scrollbar-thumb { background: #22293b; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #3f4a64; }
+        
+        .tab-btn {
+            color: var(--text-secondary);
+            transition: all 0.2s ease;
+            position: relative;
+            padding-bottom: 8px;
+        }
+        .tab-btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--accent-color);
+            box-shadow: 0 0 10px var(--accent-glow);
+            transform: scaleX(0);
+            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            border-radius: 2px;
+        }
+        .tab-btn.active {
+            color: var(--accent-color);
+        }
+        .tab-btn.active::after {
+            transform: scaleX(1);
+        }
+        .tab-btn:hover:not(.active) { color: var(--text-primary); }
+
+        .tag { @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium; }
+        .tag-government { 
+            background-color: rgba(34, 211, 238, 0.1);
+            color: #22d3ee;
+        }
+        .tag-private {
+            background-color: rgba(219, 39, 119, 0.1);
+            color: #f472b6;
+        }
+
     </style>
 </head>
 <body class="font-sans">
 
-    <div id="login-overlay" class="fixed inset-0 bg-black/50 backdrop-blur-md flex items-center justify-center z-50 p-4">
-        <div class="glass-panel p-10 rounded-2xl w-full max-w-md text-center transform transition-all animate-fade-in-up">
-            <h2 class="text-3xl font-extrabold text-[var(--accent-cyan)] mb-2 tracking-tighter">Welcome to GoScholar</h2>
-            <p class="text-gray-400 mb-8">The future of scholarship hunting.</p>
+    <!-- Error Display Container -->
+    <div id="error-container" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+        <div class="glass-panel p-8 w-full max-w-md text-center rounded-xl">
+            <i data-lucide="alert-triangle" class="w-12 h-12 mx-auto text-red-500"></i>
+            <h2 class="text-xl font-bold mt-4">Application Error</h2>
+            <p class="text-secondary mt-2" id="error-message">Could not load critical data. Please check your connection and refresh.</p>
+        </div>
+    </div>
+
+    <!-- Login Overlay -->
+    <div id="login-overlay" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div class="glass-panel p-8 w-full max-w-sm text-center transform transition-all animate-fade-in-up rounded-2xl">
+            <h2 class="text-2xl font-bold mb-2">Welcome to GoScholar</h2>
+            <p class="text-secondary mb-8">Find your future, today.</p>
             <div class="space-y-4">
-                <button type="button" id="google-login-btn" class="w-full flex items-center justify-center bg-white text-gray-700 font-bold py-3 px-4 rounded-lg hover:bg-gray-200 transition-all duration-300 shadow-lg transform hover:-translate-y-1 border border-gray-300">
+                 <button type="button" id="google-login-btn" class="w-full flex items-center justify-center font-medium py-3 px-4 secondary-button bg-white/90 text-gray-800 hover:bg-white">
                     <svg class="w-5 h-5 mr-3" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"></path><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"></path><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"></path><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.574l6.19,5.238C42.022,35.421,44,30.038,44,24C44,22.659,43.862,21.35,43.611,20.083z"></path></svg>
                     Sign in with Google
                 </button>
-                <div class="my-2 flex items-center">
-                    <div class="flex-grow border-t border-gray-600"></div>
-                    <span class="flex-shrink mx-4 text-gray-400 text-xs">OR</span>
-                    <div class="flex-grow border-t border-gray-600"></div>
-                </div>
-                <button type="button" id="guest-login-btn" class="w-full bg-gray-700/50 text-gray-200 font-bold py-3 px-4 rounded-lg hover:bg-gray-600/50 transition-all duration-300 shadow-lg transform hover:-translate-y-1">
+                 <button type="button" id="guest-login-btn" class="w-full secondary-button py-3 px-4">
                     Continue as Guest
                 </button>
             </div>
         </div>
     </div>
+    
+    <!-- Gemini Summary Modal -->
+    <div id="summary-modal" class="hidden fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" style="animation: fade-in 0.3s ease forwards;">
+        <div id="summary-modal-content" class="glass-panel p-6 md:p-8 w-full max-w-2xl rounded-2xl animate-fade-in-up" style="animation-delay: 0.1s;">
+             <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold flex items-center gap-2">
+                    <i data-lucide="sparkles" class="text-accent-color"></i>
+                    AI Summary
+                </h3>
+                <button id="close-summary-btn" class="text-secondary hover:text-primary transition-colors">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <div id="summary-text" class="text-primary leading-relaxed max-h-[60vh] overflow-y-auto pr-2">
+                <!-- Loading Skeleton -->
+                <div class="space-y-3 animate-pulse">
+                    <div class="h-4 bg-slate-700 rounded w-3/4"></div>
+                    <div class="h-4 bg-slate-700 rounded"></div>
+                    <div class="h-4 bg-slate-700 rounded w-5/6"></div>
+                    <div class="h-4 bg-slate-700 rounded w-1/2"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
+
+    <!-- Main Application Content -->
     <div id="main-content" class="hidden main-container relative min-h-screen">
-        <header class="glass-panel sticky top-0 z-40">
-            <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-                <h1 class="text-2xl font-bold text-gray-100 tracking-tight">GoScholar India</h1>
-                <div class="flex space-x-4 items-center">
-                    <button id="tab-finder" class="px-3 py-1.5 text-sm font-medium rounded-md text-[var(--accent-cyan)] bg-black/20 border border-[var(--accent-cyan)]/50">Finder</button>
-                    <button id="tab-all" class="px-3 py-1.5 text-sm font-medium rounded-md text-gray-400 hover:bg-black/20 hover:text-gray-200">All Scholarships</button>
-                    <button id="tab-credits" class="px-3 py-1.5 text-sm font-medium rounded-md text-gray-400 hover:bg-black/20 hover:text-gray-200">Credits</button>
+        <header class="sticky top-0 z-40 p-4">
+             <div class="container mx-auto px-6 py-3 flex justify-between items-center glass-panel rounded-2xl">
+                <h1 class="text-xl font-bold tracking-tight">GoScholar</h1>
+                <div class="flex space-x-8 items-center">
+                    <button id="tab-finder" class="tab-btn text-sm font-semibold">Finder</button>
+                    <button id="tab-all" class="tab-btn text-sm font-semibold">Database</button>
+                    <button id="tab-credits" class="tab-btn text-sm font-semibold">Credits</button>
                 </div>
             </div>
         </header>
         
-        <main class="container mx-auto p-4 md:p-8">
+        <main class="container mx-auto p-4 md:px-6 md:py-8">
+            <!-- Finder Tab Content -->
             <div id="finder-content">
-                <div class="text-center mb-12">
-                    <h2 class="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[var(--accent-cyan)] to-teal-300 tracking-tighter">Find Your Future Scholarship</h2>
-                    <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-400">Fill in your details and let our smart engine find the perfect opportunities for you.</p>
+                <div class="text-center mb-10 animate-fade-in-up">
+                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Find Your Perfect Scholarship</h2>
+                    <p class="mt-3 max-w-xl mx-auto text-base text-secondary">Enter your details below and our engine will find opportunities tailored for you.</p>
                 </div>
 
-                <div class="glass-panel p-6 md:p-8 rounded-2xl mb-12">
-                     <div class="flex justify-between items-center mb-6">
-                         <h2 class="text-2xl font-bold text-gray-200">Your Profile</h2>
-                         <button id="clear-form-btn" type="button" title="Clear Form" class="text-gray-400 hover:text-[var(--accent-cyan)] transition-colors">
-                             <i data-lucide="rotate-cw" class="w-5 h-5"></i>
-                         </button>
-                     </div>
+                <div class="glass-panel p-6 md:p-8 rounded-2xl mb-10">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-lg font-semibold">Your Profile</h2>
+                        <button id="clear-form-btn" type="button" title="Reset Profile" class="text-secondary hover:text-primary transition-colors">
+                            <i data-lucide="rotate-cw" class="w-4 h-4"></i>
+                        </button>
+                    </div>
                     <form id="scholarship-form">
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            <div>
-                                <h3 class="text-lg font-bold text-[var(--accent-cyan)] mb-4">Academic Details</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-6">
+                            <!-- Academic Details -->
+                            <div class="space-y-4">
+                                <h3 class="text-sm font-semibold text-secondary uppercase tracking-wider">Academic Details</h3>
                                 <div id="academic-fields-container" class="space-y-4"></div>
                             </div>
-                            <div>
-                                <h3 class="text-lg font-bold text-[var(--accent-cyan)] mb-4">Personal & Financial</h3>
-                                <div class="space-y-4">
-                                    <div><label for="category" class="block text-sm font-medium text-gray-300">Caste Category</label><select id="category" class="mt-1 block w-full pl-3 pr-10 py-2 text-base bg-gray-900/50 text-gray-200 border-gray-600 focus:outline-none focus:ring-[var(--accent-cyan)] focus:border-[var(--accent-cyan)] sm:text-sm rounded-md"><option value="GENERAL">General</option><option value="OBC">OBC</option><option value="SC">SC</option><option value="ST">ST</option><option value="MINORITY">Minority</option></select></div>
-                                    <div><label for="income" class="block text-sm font-medium text-gray-300">Annual Family Income (₹)</label><input type="number" id="income" placeholder="e.g., 80000" class="mt-1 block w-full bg-gray-900/50 text-gray-200 border-gray-600 rounded-md shadow-sm py-2 px-3 focus:ring-[var(--accent-cyan)] focus:border-[var(--accent-cyan)]"></div>
-                                    <div><label for="state" class="block text-sm font-medium text-gray-300">State of Domicile</label><select id="state" class="mt-1 block w-full pl-3 pr-10 py-2 text-base bg-gray-900/50 text-gray-200 border-gray-600 focus:outline-none focus:ring-[var(--accent-cyan)] focus:border-[var(--accent-cyan)] sm:text-sm rounded-md"><option value="">Select your State</option></select></div>
-                                </div>
+                            <!-- Personal & Financial -->
+                            <div class="space-y-4">
+                                <h3 class="text-sm font-semibold text-secondary uppercase tracking-wider">Personal & Financial</h3>
+                                <div><label for="category" class="block text-sm font-medium text-primary mb-1.5">Caste Category</label><select id="category" class="form-input w-full p-2.5 text-sm"><option value="GENERAL">General</option><option value="OBC">OBC</option><option value="SC">SC</option><option value="ST">ST</option><option value="MINORITY">Minority</option></select></div>
+                                <div><label for="income" class="block text-sm font-medium text-primary mb-1.5">Annual Family Income (₹)</label><input type="number" id="income" placeholder="e.g., 80000" class="form-input w-full p-2.5 text-sm"></div>
+                                <div><label for="state" class="block text-sm font-medium text-primary mb-1.5">State of Domicile</label><select id="state" class="form-input w-full p-2.5 text-sm"><option value="">Select your State</option></select></div>
                             </div>
-                            <div>
-                                <h3 class="text-lg font-bold text-[var(--accent-cyan)] mb-4">Special Categories</h3>
-                                <div class="space-y-3">
-                                    <label class="flex items-center"><input type="checkbox" id="exServiceman" class="h-4 w-4 text-[var(--accent-cyan)] bg-gray-700 border-gray-600 rounded focus:ring-[var(--accent-cyan)]"><span class="ml-3 text-sm text-gray-300">Ward of Ex-Servicemen</span></label>
-                                    <label class="flex items-center"><input type="checkbox" id="farmer" class="h-4 w-4 text-[var(--accent-cyan)] bg-gray-700 border-gray-600 rounded focus:ring-[var(--accent-cyan)]"><span class="ml-3 text-sm text-gray-300">Agricultural Background</span></label>
-                                    <label class="flex items-center"><input type="checkbox" id="disabled" class="h-4 w-4 text-[var(--accent-cyan)] bg-gray-700 border-gray-600 rounded focus:ring-[var(--accent-cyan)]"><span class="ml-3 text-sm text-gray-300">Person with Disability (PwD)</span></label>
+                            <!-- Special Categories & Filters -->
+                            <div class="space-y-4">
+                                <h3 class="text-sm font-semibold text-secondary uppercase tracking-wider">Other Criteria</h3>
+                                <div class="space-y-3 pt-1">
+                                    <label class="flex items-center"><input type="checkbox" id="exServiceman" class="h-4 w-4 form-checkbox rounded-sm"><span class="ml-3 text-sm text-primary">Ward of Ex-Servicemen</span></label>
+                                    <label class="flex items-center"><input type="checkbox" id="farmer" class="h-4 w-4 form-checkbox rounded-sm"><span class="ml-3 text-sm text-primary">Agricultural Background</span></label>
+                                    <label class="flex items-center"><input type="checkbox" id="disabled" class="h-4 w-4 form-checkbox rounded-sm"><span class="ml-3 text-sm text-primary">Person with Disability (PwD)</span></label>
                                 </div>
-                                <div class="mt-6">
-                                    <label class="block text-base font-semibold text-gray-300 mb-2">Scholarship Type</label>
-                                    <div class="flex items-center space-x-4 bg-black/20 p-1 rounded-lg">
-                                        <label class="flex-1 text-center"><input type="radio" name="scholarshipType" value="All" class="sr-only peer" checked><span class="block px-4 py-2 rounded-md cursor-pointer text-sm font-medium peer-checked:bg-[var(--accent-cyan)] text-gray-300 peer-checked:text-black transition">All</span></label>
-                                        <label class="flex-1 text-center"><input type="radio" name="scholarshipType" value="Government" class="sr-only peer"><span class="block px-4 py-2 rounded-md cursor-pointer text-sm font-medium peer-checked:bg-[var(--accent-cyan)] text-gray-300 peer-checked:text-black transition">Govt</span></label>
-                                        <label class="flex-1 text-center"><input type="radio" name="scholarshipType" value="Private" class="sr-only peer"><span class="block px-4 py-2 rounded-md cursor-pointer text-sm font-medium peer-checked:bg-[var(--accent-cyan)] text-gray-300 peer-checked:text-black transition">Private</span></label>
+                                <div class="pt-2">
+                                    <label class="block text-sm font-medium text-primary mb-2">Scholarship Type</label>
+                                    <div class="flex items-center space-x-2 bg-black/20 p-1 rounded-lg">
+                                        <label class="flex-1 text-center"><input type="radio" name="scholarshipType" value="All" class="sr-only peer" checked><span class="block px-3 py-1.5 rounded-md cursor-pointer text-xs font-semibold peer-checked:bg-slate-700 peer-checked:shadow-sm text-secondary peer-checked:text-white transition-all duration-200">All</span></label>
+                                        <label class="flex-1 text-center"><input type="radio" name="scholarshipType" value="Government" class="sr-only peer"><span class="block px-3 py-1.5 rounded-md cursor-pointer text-xs font-semibold peer-checked:bg-slate-700 peer-checked:shadow-sm text-secondary peer-checked:text-white transition-all duration-200">Govt</span></label>
+                                        <label class="flex-1 text-center"><input type="radio" name="scholarshipType" value="Private" class="sr-only peer"><span class="block px-3 py-1.5 rounded-md cursor-pointer text-xs font-semibold peer-checked:bg-slate-700 peer-checked:shadow-sm text-secondary peer-checked:text-white transition-all duration-200">Private</span></label>
                                     </div>
                                 </div>
                             </div>
@@ -165,290 +320,277 @@
                     </form>
                 </div>
 
-
-                <div class="border-t border-gray-700 pt-8">
-                    <h2 id="results-title" class="text-3xl font-bold text-gray-200 mb-6 text-center">Your Scholarship Matches</h2>
-                    <div id="results-container" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"></div>
+                <div>
+                    <h2 id="results-title" class="text-xl font-bold text-primary mb-4">Your Matched Scholarships</h2>
+                    <div id="results-container" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 transition-opacity duration-300"></div>
                 </div>
             </div>
 
+            <!-- All Scholarships Content -->
             <div id="all-scholarships-content" class="hidden">
-                <div class="mb-6"><h2 class="text-3xl font-bold text-gray-200">All Available Scholarships</h2><p class="text-gray-400 mt-1">Browse and search our entire database of scholarships.</p></div>
-                <div class="relative mb-6"><input type="text" id="all-scholarships-search" placeholder="Search by name, portal, or description..." class="w-full pl-10 pr-4 py-3 bg-gray-900/50 text-gray-200 border-gray-600 rounded-lg focus:ring-[var(--accent-cyan)] focus:border-[var(--accent-cyan)] transition-shadow"><div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i data-lucide="search" class="w-5 h-5 text-gray-500"></i></div></div>
-                <div id="all-scholarships-list" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"></div>
+                 <div class="mb-8"><h2 class="text-3xl font-bold">Scholarship Database</h2><p class="text-secondary mt-1">Search our entire collection of scholarship opportunities.</p></div>
+                 <div class="relative mb-6"><input type="text" id="all-scholarships-search" placeholder="Search by name, portal, or keywords..." class="w-full pl-10 pr-4 py-3 form-input"><div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i data-lucide="search" class="w-5 h-5 text-secondary"></i></div></div>
+                 <div id="all-scholarships-list" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"></div>
             </div>
-
+            
+            <!-- Credits Content -->
             <div id="credits-content" class="hidden">
-                 <div class="text-center mb-12">
-                    <h2 class="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[var(--accent-cyan)] to-teal-300 tracking-tighter">Project Credits</h2>
-                </div>
-                <div class="glass-panel p-8 md:p-12 rounded-2xl max-w-2xl mx-auto">
-                    <h3 class="text-2xl font-bold text-gray-100 mb-6 text-center">Developed By</h3>
-                    <ul class="space-y-3 text-center">
-                        <li class="text-lg text-gray-300">Bhavartha Talvekar</li>
-                        <li class="text-lg text-gray-300">Bhumika Borkar</li>
-                        <li class="text-lg text-gray-300">Dhanasshree Borkar</li>
-                        <li class="text-lg text-gray-300">Dhanashree Mohod</li>
-                        <li class="text-lg text-gray-300">Dnyandeep Dhekle</li>
-                        <li class="text-lg text-gray-300">Gaurav Kale</li>
-                    </ul>
-                </div>
+                 <div class="text-center mb-12"><h2 class="text-4xl md:text-5xl font-bold tracking-tight">Project Credits</h2></div>
+                <div class="glass-panel p-8 md:p-12 max-w-2xl mx-auto rounded-2xl">
+                    <h3 class="text-xl font-bold mb-6 text-center">Development Team</h3>
+                     <ul class="grid grid-cols-2 gap-4 text-center">
+                         <li class="text-base text-primary">Bhavartha Talvekar</li>
+                         <li class="text-base text-primary">Bhumika Deshmukh</li>
+                         <li class="text-base text-primary">Dhanasshree Borkar</li>
+                         <li class="text-base text-primary">Dhanashree Mohod</li>
+                         <li class="text-base text-primary">Dnyandeep Dhekle</li>
+                         <li class="text-base text-primary">Gaurav Kale</li>
+                     </ul>
+                 </div>
             </div>
         </main>
 
-        <footer class="mt-12 py-10 border-t border-gray-700/50">
-            <div class="container mx-auto px-6 text-center text-gray-400">
-                <p class="text-sm font-bold text-gray-200">Disclaimer</p>
-                <p class="text-xs mt-2 max-w-3xl mx-auto">
-                    This minor project, developed at GH Raisoni Skill Tech University, Nagpur, is the exclusive intellectual property of Bhavartha Talvekar. All source code, logic, and implementation details are authored and maintained solely by me. No part of this project may be copied, reused, distributed, or modified without my explicit personal permission, regardless of access granted by teammates or shared materials. Unauthorized use by juniors, peers, or any third party is strictly prohibited. If I discover that any individual has used or copied this project and falsely claimed it as their own, strict legal action will be taken. For permissions or inquiries, contact me directly at 8459151327.
+        <footer class="mt-16 py-8 border-t border-slate-800">
+            <div class="container mx-auto px-6 text-center text-secondary">
+                <p class="text-xs font-semibold text-primary opacity-80">Disclaimer & Intellectual Property Notice</p>
+                <p class="text-xs mt-2 max-w-4xl mx-auto opacity-60">
+                    This project is the sole intellectual property of its original developer. No part may be used, copied, or modified without direct permission—even if granted by other team members. Unauthorized use will lead to strict action. Contact: 8459151327.
                 </p>
             </div>
         </footer>
     </div>
 
     <script>
-        // --- STATES LIST ---
-        const states = ["Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal", "Andaman and Nicobar Islands", "Chandigarh", "Dadra and Nagar Haveli and Daman and Diu", "Delhi", "Jammu and Kashmir", "Ladakh", "Lakshadweep", "Puducherry"];
-
-        // --- UTILITY: DEBOUNCE FUNCTION ---
-        function debounce(func, delay = 400) { let timeout; return (...args) => { clearTimeout(timeout); timeout = setTimeout(() => { func.apply(this, args); }, delay); }; }
-        
-        // --- GLOBAL SCOPE FOR SCHOLARSHIPS ---
+        // --- DATA & CONFIG ---
+        const states = ["Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal", "Andaman and Nicobar Islands", "Chandigarh", "Dadra and Nagar Haveli and Daman and Diu", "Delhi", "Jammu and Kashmir", "Ladakh", "Lakshadweed", "Puducherry"];
         let scholarships = [];
+        // --- IMPORTANT: ADD YOUR GEMINI API KEY HERE ---
+        const GEMINI_API_KEY = "AIzaSyBbh2XPDrPm7bocP3WqTb0l866rRC-XIy0"; // Replace with your actual API key
 
-        // --- SCRIPT LOGIC ---
+        // --- UTILITY ---
+        const debounce = (func, delay = 400) => { let timeout; return (...args) => { clearTimeout(timeout); timeout = setTimeout(() => { func.apply(this, args); }, delay); }; };
+        
+        // --- INITIALIZATION ---
         document.addEventListener('DOMContentLoaded', () => {
-            const guestLoginBtn = document.getElementById('guest-login-btn');
-            const googleLoginBtn = document.getElementById('google-login-btn');
-
-            const performLogin = () => {
-                document.getElementById('login-overlay').classList.add('hidden');
-                document.getElementById('main-content').classList.remove('hidden');
-                initializeApp(); 
-            };
-
-            guestLoginBtn.addEventListener('click', performLogin);
+            document.getElementById('guest-login-btn').addEventListener('click', performLogin);
             
+            const googleLoginBtn = document.getElementById('google-login-btn');
             googleLoginBtn.addEventListener('click', () => {
-                alert("Sign in with Google is coming soon! For now, please continue as a guest.");
+                const originalContent = googleLoginBtn.innerHTML;
+                googleLoginBtn.textContent = 'Coming Soon!';
+                googleLoginBtn.disabled = true;
+                setTimeout(() => {
+                    googleLoginBtn.innerHTML = originalContent;
+                    googleLoginBtn.disabled = false;
+                }, 2000);
+            });
+
+             // Gemini Modal listeners
+            const summaryModal = document.getElementById('summary-modal');
+            const closeSummaryBtn = document.getElementById('close-summary-btn');
+
+            closeSummaryBtn.addEventListener('click', () => {
+                summaryModal.classList.add('hidden');
+            });
+            
+            summaryModal.addEventListener('click', (e) => {
+                if (e.target === summaryModal) {
+                    summaryModal.classList.add('hidden');
+                }
             });
         });
 
+        function performLogin() {
+            document.getElementById('login-overlay').classList.add('hidden');
+            document.getElementById('main-content').classList.remove('hidden');
+            initializeApp();
+        }
+
         async function initializeApp() {
-            // --- NEW: Fetch scholarships from your live backend FIRST ---
             try {
-                // !!! IMPORTANT: REPLACE THIS URL with the one Wrangler gave you !!!
                 const response = await fetch("https://goscholar-backend.propane.workers.dev");
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const cloudScholarships = await response.json();
-                scholarships = cloudScholarships; 
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                scholarships = await response.json();
             } catch (error) {
                 console.error("Failed to fetch scholarships:", error);
-                alert("CRITICAL ERROR: Could not load the scholarship database from the server. Please check the developer console (F12) for more details.");
-                scholarships = []; // Fallback to an empty list on error
+                const errorContainer = document.getElementById('error-container');
+                const mainContent = document.getElementById('main-content');
+                document.getElementById('login-overlay').classList.add('hidden');
+                mainContent.classList.add('hidden');
+                errorContainer.classList.remove('hidden');
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                }
+                return;
             }
-        
-            // --- All other setup functions are now called AFTER the data is loaded ---
+            
             const stateSelect = document.getElementById('state');
             if (stateSelect.options.length <= 1) { states.forEach(state => stateSelect.add(new Option(state, state))); }
+
             const form = document.getElementById('scholarship-form');
-            
             const debouncedFind = debounce(findScholarships);
+            
             form.addEventListener('input', (e) => {
-                if (e.target.type === 'number') {
-                    validateNumberInput(e.target);
-                }
-                if(e.target.id === 'studyLevel' || e.target.id === 'fieldOfStudy') {
-                    updateAcademicFields();
-                }
+                if (e.target.type === 'number') validateNumberInput(e.target);
+                if (e.target.id === 'studyLevel' || e.target.id === 'fieldOfStudy') updateAcademicFields();
                 debouncedFind();
             });
 
             document.getElementById('clear-form-btn').addEventListener('click', () => {
                 form.reset();
                 updateAcademicFields();
-                form.dispatchEvent(new Event('input')); 
+                form.dispatchEvent(new Event('input'));
             });
             
             setupTabs();
-            updateAcademicFields(); 
+            updateAcademicFields();
             findScholarships();
-            displayAllScholarships(); 
-            lucide.createIcons();
+            displayAllScholarships();
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
         }
-        
-        function validateNumberInput(input) {
-            const id = input.id;
-            let value = parseFloat(input.value);
-            let max = null;
-            let message = null;
 
-            if (id === 'cgpa') {
-                max = 10.0;
-                message = "CGPA cannot exceed 10.0";
-            } else if (id.includes('marks')) {
-                max = 100;
-                message = "Percentage cannot exceed 100";
-            }
-            
-            if (max !== null && value > max) {
-                input.value = max;
-                const parentDiv = input.parentElement;
-                let errorMsg = parentDiv.querySelector('.error-message');
-                if (!errorMsg) {
-                    errorMsg = document.createElement('p');
-                    errorMsg.className = 'text-red-400 text-xs mt-1 error-message';
-                    parentDiv.appendChild(errorMsg);
-                }
-                errorMsg.textContent = message;
-                setTimeout(() => {
-                    errorMsg.remove();
-                }, 3000);
-            }
+        function validateNumberInput(input) {
+             let value = parseFloat(input.value);
+             const max = parseFloat(input.max);
+             if (max && value > max) input.value = max;
         }
 
         function updateAcademicFields() {
             const container = document.getElementById('academic-fields-container');
             let currentLevel = container.querySelector('#studyLevel')?.value || 'UG';
             let currentField = container.querySelector('#fieldOfStudy')?.value;
+            container.innerHTML = '';
 
-            container.innerHTML = ''; 
+            const createLabel = (id, text) => `<label for="${id}" class="block text-sm font-medium text-primary mb-1.5">${text}</label>`;
+            const createSelect = (id, options) => `<select id="${id}" class="form-input w-full p-2.5 text-sm">${options}</select>`;
+            const createInput = (id, placeholder = '', type = 'number', max = 100, step = 1) => `<input type="${type}" id="${id}" min="0" max="${max}" step="${step}" placeholder="${placeholder}" class="form-input w-full p-2.5 text-sm">`;
 
-            const levelSelectHTML = `<div class="dynamic-field"><label for="studyLevel" class="block text-sm font-medium text-gray-300">Current Level of Study</label><select id="studyLevel" class="mt-1 block w-full pl-3 pr-10 py-2 text-base bg-gray-900/50 text-gray-200 border-gray-600 focus:outline-none focus:ring-[var(--accent-cyan)] focus:border-[var(--accent-cyan)] sm:text-sm rounded-md">
+            const levelOptions = `
                 <option value="PreMatric">Pre-Matric (Nursery-10)</option>
                 <option value="PostMatric">Post-Matric (11-12)</option>
                 <option value="UG">Undergraduate (UG)</option>
                 <option value="PG">Postgraduate (PG)</option>
                 <option value="Doctoral">Doctoral (Ph.D.)</option>
-                <option value="PostDoctoral">Post-Doctoral / Research</option>
-            </select></div>`;
-            container.insertAdjacentHTML('beforeend', levelSelectHTML);
-            const levelSelect = container.querySelector('#studyLevel');
-            levelSelect.value = currentLevel;
+                <option value="PostDoctoral">Post-Doctoral</option>`;
+            container.insertAdjacentHTML('beforeend', `<div>${createLabel('studyLevel', 'Current Level of Study')}${createSelect('studyLevel', levelOptions)}</div>`);
+            container.querySelector('#studyLevel').value = currentLevel;
 
             const fieldGroups = {
-                UG: {
-                    "General Education": ["BA", "BSc", "B.Com", "Humanities"],
-                    "Technical / Professional": ["B.E/B.Tech", "Architecture", "Design"],
-                    "Medical & Health": ["MBBS", "BDS", "Nursing", "Pharmacy", "Ayurveda", "Homeopathy"],
-                    "Management / IT": ["BBA", "BCA", "Computer Science"],
-                    "Agriculture & Allied": ["B.Sc. Agri", "Veterinary", "Fisheries"],
-                    "Law & Education": ["LLB", "B.Ed"]
-                },
-                PG: {
-                    "General Education": ["MA", "MSc", "M.Com"],
-                    "Technical / Professional": ["M.Tech"],
-                    "Medical & Health": ["MD", "MS"],
-                    "Management / IT": ["MBA", "MCA", "Data Science"],
-                    "Agriculture & Allied": ["M.Sc. Agri"],
-                    "Law & Education": ["LLM", "M.Ed"]
-                },
-                Doctoral: { "Research Fields": ["Ph.D.", "M.Phil"] },
-                PostDoctoral: { "Research Fields": ["Post-Doctoral"] }
+                UG: {"General": ["BA", "BSc", "B.Com"], "Technical": ["B.E/B.Tech", "Architecture"], "Medical": ["MBBS", "BDS", "Nursing", "Pharmacy"], "Management/IT": ["BBA", "BCA"], "Other": ["Law", "Education"]},
+                PG: {"General": ["MA", "MSc", "M.Com"], "Technical": ["M.Tech"], "Medical": ["MD", "MS"], "Management/IT": ["MBA", "MCA"], "Other": ["LLM", "M.Ed"]},
+                Doctoral: { "Research": ["Ph.D.", "M.Phil"] },
+                PostDoctoral: { "Research": ["Post-Doctoral"] }
             };
 
-            let fieldOptions = '';
+            let fieldOptionsHTML = '';
             let fieldDisabled = false;
             
             if (currentLevel === 'PreMatric') {
-                fieldDisabled = true;
-                fieldOptions = `<option value="General">General</option>`;
+                fieldDisabled = true; fieldOptionsHTML = `<option value="General">General</option>`;
             } else if (currentLevel === 'PostMatric') {
-                fieldOptions = `<option value="Science">Science</option><option value="Commerce">Commerce</option><option value="Arts">Arts</option>`;
+                fieldOptionsHTML = `<option value="Science">Science</option><option value="Commerce">Commerce</option><option value="Arts">Arts</option>`;
             } else if (fieldGroups[currentLevel]) {
-                 const relevantGroups = fieldGroups[currentLevel];
-                 for (const group in relevantGroups) {
-                     fieldOptions += `<optgroup label="${group}">`;
-                     relevantGroups[group].forEach(opt => fieldOptions += `<option value="${opt}">${opt}</option>`);
-                     fieldOptions += `</optgroup>`;
-                 }
+                Object.entries(fieldGroups[currentLevel]).forEach(([group, opts]) => {
+                    fieldOptionsHTML += `<optgroup label="${group}">${opts.map(o => `<option value="${o}">${o}</option>`).join('')}</optgroup>`;
+                });
             }
 
-            const fieldSelectHTML = `<div class="dynamic-field"><label for="fieldOfStudy" class="block text-sm font-medium text-gray-300">Field of Study / Stream</label><select id="fieldOfStudy" class="mt-1 block w-full pl-3 pr-10 py-2 text-base bg-gray-900/50 text-gray-200 border-gray-600 focus:outline-none focus:ring-[var(--accent-cyan)] focus:border-[var(--accent-cyan)] sm:text-sm rounded-md" ${fieldDisabled ? 'disabled' : ''}>${fieldOptions}</select></div>`;
-            container.insertAdjacentHTML('beforeend', fieldSelectHTML);
+            container.insertAdjacentHTML('beforeend', `<div><label for="fieldOfStudy" class="block text-sm font-medium text-primary mb-1.5">Field of Study</label><select id="fieldOfStudy" class="form-input w-full p-2.5 text-sm" ${fieldDisabled ? 'disabled' : ''}>${fieldOptionsHTML}</select></div>`);
             const fieldSelect = container.querySelector('#fieldOfStudy');
             if (currentField && Array.from(fieldSelect.options).some(o => o.value === currentField)) {
                 fieldSelect.value = currentField;
-            } else if (!fieldDisabled) {
-                fieldSelect.selectedIndex = 0;
             }
             currentField = fieldSelect.value;
-
-            const createInputHTML = (id, label, type = 'number', placeholder = 'e.g., 85') => `<div class="dynamic-field"><label for="${id}" class="block text-sm font-medium text-gray-300">${label}</label><input type="${type}" id="${id}" min="0" ${type === 'number' && id !== 'cgpa' ? 'max="100"' : ''} ${id === 'cgpa' ? 'max="10" step="0.1"' : ''} placeholder="${placeholder}" class="mt-1 block w-full bg-gray-900/50 text-gray-200 border-gray-600 rounded-md shadow-sm py-2 px-3 focus:ring-[var(--accent-cyan)] focus:border-[var(--accent-cyan)]"></div>`;
-            const createSelectHTML = (id, label, options) => `<div class="dynamic-field"><label for="${id}" class="block text-sm font-medium text-gray-300">${label}</label><select id="${id}" class="mt-1 block w-full pl-3 pr-10 py-2 text-base bg-gray-900/50 text-gray-200 border-gray-600 focus:outline-none focus:ring-[var(--accent-cyan)] focus:border-[var(--accent-cyan)] sm:text-sm rounded-md">${options}</select></div>`;
-
+            
             let specificFieldsHTML = '';
-            
-            if (['PostMatric', 'UG', 'PG', 'Doctoral', 'PostDoctoral'].includes(currentLevel)) {
-                specificFieldsHTML += createInputHTML('marks10', '10th Percentage (%)');
-            }
-            if (['UG', 'PG', 'Doctoral', 'PostDoctoral'].includes(currentLevel)) {
-                specificFieldsHTML += createInputHTML('marks12', '12th Percentage (%)');
-            }
-            if (['PG', 'Doctoral', 'PostDoctoral'].includes(currentLevel)) {
-                specificFieldsHTML += createInputHTML('marksUG', 'Undergraduate CGPA / Percentage');
-            }
-             if (['Doctoral', 'PostDoctoral'].includes(currentLevel)) {
-                specificFieldsHTML += createInputHTML('marksPG', 'Postgraduate Percentage (%)');
-            }
-            
+            if (['PostMatric', 'UG', 'PG', 'Doctoral', 'PostDoctoral'].includes(currentLevel)) specificFieldsHTML += `<div>${createLabel('marks10', '10th Percentage (%)')}${createInput('marks10', 'e.g., 85')}</div>`;
+            if (['UG', 'PG', 'Doctoral', 'PostDoctoral'].includes(currentLevel)) specificFieldsHTML += `<div>${createLabel('marks12', '12th Percentage (%)')}${createInput('marks12', 'e.g., 85')}</div>`;
+            if (['PG', 'Doctoral', 'PostDoctoral'].includes(currentLevel)) specificFieldsHTML += `<div>${createLabel('marksUG', 'UG CGPA / Percentage')}${createInput('marksUG', 'e.g., 8.5', 'number', 10, 0.1)}</div>`;
+            if (['Doctoral', 'PostDoctoral'].includes(currentLevel)) specificFieldsHTML += `<div>${createLabel('marksPG', 'PG Percentage (%)')}${createInput('marksPG', 'e.g., 75')}</div>`;
             if (currentLevel === 'PreMatric') {
                 const classOptions = Array.from({length: 10}, (_, i) => `<option value="${i + 1}">${i + 1}</option>`).join('');
-                specificFieldsHTML += createSelectHTML('currentClass', 'Current Class', classOptions);
-                specificFieldsHTML += createInputHTML('marksPrev', 'Previous Class Percentage (%)');
-            } else if (currentLevel === 'UG') {
-                const technicalStreams = ["B.E/B.Tech"];
-                if (technicalStreams.includes(currentField)) {
-                    const semOptions = Array.from({length: 8}, (_, i) => `<option value="${i + 1}">Semester ${i + 1}</option>`).join('');
-                    specificFieldsHTML += createSelectHTML('currentSemester', 'Current Semester', semOptions);
-                    specificFieldsHTML += createInputHTML('cgpa', 'Previous Semester CGPA (out of 10)', 'number', 'e.g., 8.5');
-                }
+                specificFieldsHTML += `<div>${createLabel('currentClass', 'Current Class')}${createSelect('currentClass', classOptions)}</div>`;
+                specificFieldsHTML += `<div>${createLabel('marksPrev', 'Previous Class %')}${createInput('marksPrev', 'e.g., 90')}</div>`;
+            } else if (currentLevel === 'UG' && currentField === "B.E/B.Tech") {
+                const semOptions = Array.from({length: 8}, (_, i) => `<option value="${i + 1}">Semester ${i + 1}</option>`).join('');
+                specificFieldsHTML += `<div>${createLabel('currentSemester', 'Current Semester')}${createSelect('currentSemester', semOptions)}</div>`;
+                specificFieldsHTML += `<div>${createLabel('cgpa', 'Previous Sem CGPA')}${createInput('cgpa', 'e.g., 8.5', 'number', 10, 0.1)}</div>`;
             }
-
             container.insertAdjacentHTML('beforeend', specificFieldsHTML);
         }
 
         function setupTabs() {
-            const tabFinder = document.getElementById('tab-finder');
-            const tabAll = document.getElementById('tab-all');
-            const tabCredits = document.getElementById('tab-credits');
-            const finderContent = document.getElementById('finder-content');
-            const allScholarshipsContent = document.getElementById('all-scholarships-content');
-            const creditsContent = document.getElementById('credits-content');
-            
-            const tabs = [tabFinder, tabAll, tabCredits];
-            const contents = [finderContent, allScholarshipsContent, creditsContent];
-
+            const tabs = document.querySelectorAll('.tab-btn');
+            const contents = [document.getElementById('finder-content'), document.getElementById('all-scholarships-content'), document.getElementById('credits-content')];
             const setActiveTab = (activeIndex) => {
-                tabs.forEach((tab, index) => {
-                    if (index === activeIndex) {
-                        tab.classList.add('bg-black/20', 'text-[var(--accent-cyan)]', 'border-[var(--accent-cyan)]/50');
-                        tab.classList.remove('text-gray-400', 'hover:bg-black/20', 'hover:text-gray-200');
-                    } else {
-                        tab.classList.add('text-gray-400', 'hover:bg-black/20', 'hover:text-gray-200');
-                        tab.classList.remove('bg-black/20', 'text-[var(--accent-cyan)]', 'border-[var(--accent-cyan)]/50');
-                    }
-                });
-                contents.forEach((content, index) => {
-                    content.style.display = (index === activeIndex) ? 'block' : 'none';
-                });
+                tabs.forEach((tab, index) => tab.classList.toggle('active', index === activeIndex));
+                contents.forEach((content, index) => content.style.display = (index === activeIndex) ? 'block' : 'none');
             };
-            
-            tabFinder.addEventListener('click', () => setActiveTab(0));
-            tabAll.addEventListener('click', () => setActiveTab(1));
-            tabCredits.addEventListener('click', () => setActiveTab(2));
-
+            tabs.forEach((tab, index) => tab.addEventListener('click', () => setActiveTab(index)));
+            setActiveTab(0);
             const searchInput = document.getElementById('all-scholarships-search');
             searchInput.addEventListener('input', debounce(() => displayAllScholarships(searchInput.value), 300));
-            allScholarshipsContent.style.display = 'none';
-            creditsContent.style.display = 'none';
         }
+        
+        async function getGeminiSummary(scholarship) {
+            const summaryModal = document.getElementById('summary-modal');
+            const summaryText = document.getElementById('summary-text');
+            
+            summaryModal.classList.remove('hidden');
+            summaryText.innerHTML = `
+                <div class="space-y-3 animate-pulse">
+                    <div class="h-4 bg-slate-700 rounded w-3/4"></div>
+                    <div class="h-4 bg-slate-700 rounded"></div>
+                    <div class="h-4 bg-slate-700 rounded w-5/6"></div>
+                    <div class="h-4 bg-slate-700 rounded w-1/2"></div>
+                </div>`;
 
+            if (!GEMINI_API_KEY) {
+                summaryText.innerHTML = `<p class="text-red-400"><strong>Configuration Error:</strong> Please add your Google Gemini API key to the script to enable this feature.</p>`;
+                return;
+            }
+
+            const prompt = `Please provide a concise, easy-to-read summary for the following scholarship. Focus on the main eligibility criteria, what the scholarship offers, and who it's for. Format the summary in clear, simple language. Here are the details:\n\nName: ${scholarship.name}\nDescription: ${scholarship.description}\nEligibility: ${JSON.stringify(scholarship.eligibility, null, 2)}`;
+
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
+            
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    let errorDetails = `API request failed with status ${response.status}.`;
+                    if (data.error && data.error.message) {
+                        errorDetails = data.error.message;
+                    }
+                    throw new Error(errorDetails);
+                }
+
+                const summary = data.candidates[0].content.parts[0].text;
+                
+                // Simple markdown-to-HTML
+                let htmlSummary = summary
+                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Bold
+                    .replace(/\*(.*?)\*/g, '<em>$1</em>')     // Italic
+                    .replace(/\n/g, '<br>');                   // Newlines
+
+                summaryText.innerHTML = htmlSummary;
+
+            } catch (error) {
+                console.error("Gemini API Error:", error);
+                summaryText.innerHTML = `<p class="text-red-400"><strong>Error:</strong> Could not get summary from AI.<br><br><small class="opacity-70">${error.message}</small></p>`;
+            }
+        }
+        
         function calculateMatchScore(scholarship, student) {
             const e = scholarship.eligibility;
-            
             if (e.level && !e.level.includes(student.level)) return 0;
             if (student.scholarshipType !== 'All' && scholarship.type !== student.scholarshipType) return 0;
             if (e.income && student.income > 0 && e.income < student.income) return 0;
@@ -474,10 +616,6 @@
             if (e.isDisabled && student.isDisabled) score += 4;
             if (e.isExServiceman && student.isExServiceman) score += 4;
             if (e.isFarmer && student.isFarmer) score += 4;
-            if (e.category && e.category.includes(student.category) && e.category.length === 1) score += 2;
-            if (e.minMarks12 && student.marks12 > (e.minMarks12 + 15)) score += 2;
-            if (e.minCGPA && student.cgpa > (e.minCGPA + 1.5)) score += 2;
-
             return score;
         }
 
@@ -504,9 +642,8 @@
 
             const scoredScholarships = scholarships
                 .map(s => ({ ...s, matchScore: calculateMatchScore(s, student) }))
-                .filter(s => s.matchScore > 0);
-            
-            scoredScholarships.sort((a, b) => b.matchScore - a.matchScore);
+                .filter(s => s.matchScore > 0)
+                .sort((a, b) => b.matchScore - a.matchScore);
 
             displayResults(scoredScholarships, student);
         }
@@ -514,74 +651,107 @@
         function displayResults(results, student) {
             const container = document.getElementById('results-container');
             const title = document.getElementById('results-title');
-            container.innerHTML = ''; 
             
             const hasRequiredInput = student.income > 0 || student.marksPrev > 0 || student.marks10 > 0 || student.marks12 > 0 || student.marksUG > 0 || student.marksPG > 0 || student.cgpa > 0;
-            if (!hasRequiredInput) {
-                title.innerHTML = 'Start by filling your details';
-                container.innerHTML = `<div class="glass-panel p-8 rounded-2xl text-center h-full flex flex-col justify-center"><i data-lucide="edit-3" class="mx-auto h-16 w-16 text-purple-400" stroke-width="1"></i><h3 class="mt-4 text-xl font-semibold text-gray-200">Ready to find scholarships?</h3><p class="mt-1 text-gray-400">Please fill your academic and financial details to start.</p></div>`;
-                lucide.createIcons();
-                return;
-            }
             
-            title.innerHTML = `Showing <span class="text-[var(--accent-cyan)]">${results.length}</span> Matching Scholarships`;
+            container.classList.add('opacity-0');
 
-            if (results.length === 0) {
-                container.innerHTML = `<div class="glass-panel p-8 rounded-2xl text-center result-card" style="animation: card-fade-in 0.5s ease-out forwards;"><i data-lucide="search-x" class="mx-auto h-12 w-12 text-red-400" stroke-width="1.5"></i><h3 class="mt-4 text-xl font-semibold text-gray-200">No Matching Scholarships Found</h3><p class="mt-1 text-gray-400">Based on the provided details, we couldn't find any direct matches. Try adjusting the criteria.</p></div>`;
-                lucide.createIcons();
-                return;
-            }
-            const maxScore = results.length > 0 ? results[0].matchScore : 0;
-            results.forEach((s, index) => container.appendChild(createScholarshipCard(s, index, s.matchScore >= maxScore && maxScore > 5)));
-            lucide.createIcons();
+            setTimeout(() => {
+                container.innerHTML = '';
+                
+                if (!hasRequiredInput) {
+                    title.textContent = 'Start by filling in your profile';
+                    container.innerHTML = `<div class="bg-purple-900/20 border-l-4 border-[var(--accent-color)] p-6 rounded-r-xl col-span-1 md:col-span-2 xl:col-span-3 text-center animate-fade-in-up"><h3 class="font-semibold text-[var(--accent-color)]">Ready to find scholarships?</h3><p class="mt-1 text-sm text-secondary">Fill in your details above to begin.</p></div>`;
+                } else {
+                    title.innerHTML = `Found <span class="text-[var(--accent-color)]">${results.length}</span> Matching Scholarships`;
+
+                    if (results.length === 0) {
+                        container.innerHTML = `<div class="glass-panel p-8 rounded-xl text-center col-span-1 md:col-span-2 xl:col-span-3 animate-fade-in-up"><i data-lucide="search-x" class="mx-auto h-10 w-10 text-secondary" stroke-width="1.5"></i><h3 class="mt-4 text-base font-semibold text-primary">No Matching Scholarships Found</h3><p class="mt-1 text-sm text-secondary">We couldn't find any scholarships for your profile. Try adjusting the criteria.</p></div>`;
+                    } else {
+                        const maxScore = results.length > 0 ? results[0].matchScore : 0;
+                        results.forEach((s, index) => container.appendChild(createScholarshipCard(s, index, s.matchScore >= maxScore && maxScore > 5)));
+                    }
+                }
+                
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                }
+                container.classList.remove('opacity-0');
+
+            }, 200);
         }
-        
+
         function createScholarshipCard(s, index, isTopMatch = false) {
             const card = document.createElement('div');
-            card.className = 'relative glass-panel p-6 rounded-2xl result-card';
-            card.style.animation = `card-fade-in 0.5s ease-out ${index * 100}ms forwards`;
+            card.className = 'result-card glass-panel p-5 flex flex-col rounded-2xl';
+            card.style.animation = `fade-in-up 0.4s ease-out ${index * 80}ms forwards`;
             
+            const topMatchBadge = isTopMatch ? `<span class="top-match-badge flex items-center gap-1"><i data-lucide="star" class="w-3 h-3 fill-current"></i> Top Match</span>` : '';
             const typeClass = s.type.toLowerCase() === 'private' ? 'tag-private' : 'tag-government';
-            const typeTag = `<span class="tag ${typeClass}">${s.type}</span>`;
-            const topMatchBadge = isTopMatch ? `<div class="top-match-badge"><i data-lucide="star" class="inline-block w-3 h-3 -mt-0.5"></i> Top Match</div>` : '';
 
+            const createEliItem = (icon, text) => `<li class="flex items-start text-sm"><i data-lucide="${icon}" class="w-4 h-4 mr-2.5 mt-0.5 text-secondary flex-shrink-0"></i><span class="text-primary">${text}</span></li>`;
             const eligibilityItems = [];
-            if(s.eligibility.stream && s.eligibility.stream[0] !== 'All') eligibilityItems.push(`<li>Stream: <strong>${s.eligibility.stream.join(', ')}</strong></li>`);
-            if(s.eligibility.minClass && s.eligibility.maxClass) eligibilityItems.push(`<li>For Classes: <strong>${s.eligibility.minClass} - ${s.eligibility.maxClass}</strong></li>`);
-            if(s.eligibility.category) eligibilityItems.push(`<li>Category: <strong>${s.eligibility.category.join(', ')}</strong></li>`);
-            if(s.eligibility.income) eligibilityItems.push(`<li>Family Income below: <strong>₹${s.eligibility.income.toLocaleString('en-IN')}</strong></li>`);
-            if(s.eligibility.minMarksPrev) eligibilityItems.push(`<li>Min Previous Class Marks: <strong>${s.eligibility.minMarksPrev}%</strong></li>`);
-            if(s.eligibility.minMarks10) eligibilityItems.push(`<li>Min 10th Marks: <strong>${s.eligibility.minMarks10}%</strong></li>`);
-            if(s.eligibility.minMarks12) eligibilityItems.push(`<li>Min 12th Marks: <strong>${s.eligibility.minMarks12}%</strong></li>`);
-            if(s.eligibility.minMarksUG) eligibilityItems.push(`<li>Min UG Marks: <strong>${s.eligibility.minMarksUG}%</strong></li>`);
-            if(s.eligibility.minMarksPG) eligibilityItems.push(`<li>Min PG Marks: <strong>${s.eligibility.minMarksPG}%</strong></li>`);
-            if(s.eligibility.minCGPA) eligibilityItems.push(`<li>Min CGPA: <strong>${s.eligibility.minCGPA}</strong></li>`);
-            if(s.eligibility.domicile) eligibilityItems.push(`<li>Domicile: <strong>${s.eligibility.domicile.join(', ')}</strong></li>`);
+            if(s.eligibility.stream && s.eligibility.stream[0] !== 'All') eligibilityItems.push(createEliItem('award', `<strong>Stream:</strong> ${s.eligibility.stream.join(', ')}`));
+            if(s.eligibility.income) eligibilityItems.push(createEliItem('indian-rupee', `<strong>Income:</strong> &lt; ₹${s.eligibility.income.toLocaleString('en-IN')}`));
+            if(s.eligibility.minMarks12) eligibilityItems.push(createEliItem('percent', `<strong>Min 12th:</strong> ${s.eligibility.minMarks12}%`));
+            if(s.eligibility.minMarks10) eligibilityItems.push(createEliItem('percent', `<strong>Min 10th:</strong> ${s.eligibility.minMarks10}%`));
+
+            const cardId = `scholarship-${index}-${Date.now()}`;
+            card.id = cardId;
 
             card.innerHTML = `
-                ${topMatchBadge}
-                <div class="flex justify-between items-start"><h3 class="text-xl font-bold text-[var(--accent-cyan)] pr-4">${s.name}</h3>${typeTag}</div>
-                <p class="text-sm font-medium text-gray-400 mt-1 mb-3">Portal: ${s.portal}</p>
-                <p class="text-gray-300 mb-4 text-sm">${s.description}</p>
-                <div class="border-t border-gray-700 pt-4"><h4 class="font-semibold text-gray-200 mb-2">Key Eligibility:</h4><ul class="list-disc list-inside text-sm text-gray-300 space-y-1">
-                    ${eligibilityItems.join('')}
-                </ul></div>
-                <div class="mt-5"><a href="${s.link}" target="_blank" class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 focus:ring-offset-gray-800 transition-all transform hover:-translate-y-0.5">Visit Portal <i data-lucide="arrow-right" class="ml-2 h-4 w-4"></i></a></div>`;
+                ${isTopMatch ? `<div class="absolute top-4 right-4">${topMatchBadge}</div>` : ''}
+                <div class="flex-grow">
+                    <div class="flex items-center gap-2 mb-2">
+                         <span class="tag ${typeClass}">${s.type}</span>
+                    </div>
+                    <h3 class="text-base font-bold text-primary pr-4">${s.name}</h3>
+                    <p class="text-sm text-secondary mt-1">via ${s.portal}</p>
+                    <div class="my-4 h-px bg-gradient-to-r from-transparent via-slate-700 to-transparent"></div>
+                    <p class="text-primary mb-4 text-sm leading-relaxed">${s.description}</p>
+                    <ul class="space-y-1.5">${eligibilityItems.slice(0, 3).join('')}</ul>
+                </div>
+                <div class="mt-5 flex-shrink-0 grid grid-cols-2 gap-3">
+                    <a href="${s.link}" target="_blank" class="primary-button inline-flex items-center justify-center w-full text-center px-4 py-2.5 text-sm">
+                        Visit Portal <i data-lucide="arrow-right" class="inline-block ml-1.5 h-4 w-4"></i>
+                    </a>
+                    <button class="secondary-button summary-button inline-flex items-center justify-center w-full text-center px-4 py-2.5 text-sm">
+                        Summarize <i data-lucide="sparkles" class="inline-block ml-1.5 h-4 w-4"></i>
+                    </button>
+                </div>`;
+            
+            // Attach event listener after the element is created
+            setTimeout(() => {
+                const liveCard = document.getElementById(cardId);
+                if (liveCard) {
+                    const summaryButton = liveCard.querySelector('.summary-button');
+                    if (summaryButton) {
+                        summaryButton.addEventListener('click', () => getGeminiSummary(s));
+                    }
+                }
+            }, 0);
+
             return card;
         }
         
-         function displayAllScholarships(searchText = "") {
+        function displayAllScholarships(searchText = "") {
             const container = document.getElementById('all-scholarships-list');
             container.innerHTML = '';
             const lowercasedSearch = searchText.toLowerCase();
-            const filteredScholarships = scholarships.filter(s => s.name.toLowerCase().includes(lowercasedSearch) || s.portal.toLowerCase().includes(lowercasedSearch) || s.description.toLowerCase().includes(lowercasedSearch));
-            if (filteredScholarships.length === 0) {
-                 container.innerHTML = `<div class="md-col-span-2 xl-col-span-3 text-center py-10"><p class="text-gray-500">No scholarships found for "${searchText}"</p></div>`;
+            const filtered = scholarships.filter(s => s.name.toLowerCase().includes(lowercasedSearch) || s.portal.toLowerCase().includes(lowercasedSearch) || s.description.toLowerCase().includes(lowercasedSearch));
+            
+            if (filtered.length === 0) {
+                 container.innerHTML = `<div class="md:col-span-2 xl:col-span-3 text-center py-10"><p class="text-secondary">No scholarships found for "${searchText}".</p></div>`;
                  return;
             }
-            filteredScholarships.forEach((s, index) => container.appendChild(createScholarshipCard(s, index)));
-            lucide.createIcons();
+            filtered.forEach((s, index) => container.appendChild(createScholarshipCard(s, index)));
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
         }
     </script>
 </body>
 </html>
+    
+
+
