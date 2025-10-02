@@ -365,7 +365,10 @@
         const states = ["Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal", "Andaman and Nicobar Islands", "Chandigarh", "Dadra and Nagar Haveli and Daman and Diu", "Delhi", "Jammu and Kashmir", "Ladakh", "Lakshadweed", "Puducherry"];
         let scholarships = [];
         // --- IMPORTANT: ADD YOUR GEMINI API KEY HERE ---
-        const GEMINI_API_KEY = "AIzaSyBbh2XPDrPm7bocP3WqTb0l866rRC-XIy0"; 
+        // This key MUST be from a NEW Google Cloud Project where you have
+        // 1. Enabled the "Vertex AI API"
+        // 2. Linked a billing account
+        const GEMINI_API_KEY = "AIzaSyDwjYKdVbOV_UnmLVQfLJGHHntXPT56RMg"; 
 
         // --- UTILITY ---
         const debounce = (func, delay = 400) => { let timeout; return (...args) => { clearTimeout(timeout); timeout = setTimeout(() => { func.apply(this, args); }, delay); }; };
@@ -562,7 +565,7 @@
 
             const prompt = `Please provide a concise, easy-to-read summary for the following scholarship. Focus on the main eligibility criteria, what the scholarship offers, and who it's for. Format the summary in clear, simple language. Here are the details:\n\nName: ${scholarship.name}\nDescription: ${scholarship.description}\nEligibility: ${JSON.stringify(scholarship.eligibility, null, 2)}`;
 
-            const apiUrl = `https://generativelanguage.googleapis.com/v1/models/gemini-1.0-pro:generateContent?key=${GEMINI_API_KEY}`;
+            const apiUrl = `https://generativelanguage.googleapis.com/v1/models/gemini-pro-vision:generateContent?key=${GEMINI_API_KEY}`;
             
             try {
                 const response = await fetch(apiUrl, {
@@ -596,7 +599,11 @@
 
             } catch (error) {
                 console.error("Gemini API Error:", error);
-                summaryText.innerHTML = `<p class="text-red-400"><strong>Error:</strong> Could not get summary from AI.<br><br><small class="opacity-70">${error.message}</small></p>`;
+                let detailedError = error.message;
+                if (error.message.includes("is not found for API version")) {
+                    detailedError += `<br><br><strong>Troubleshooting Tip:</strong> This usually means the API is not fully enabled or configured for your Google Cloud project. Please double-check that the "Vertex AI API" is enabled and a billing account is linked.`
+                }
+                summaryText.innerHTML = `<p class="text-red-400"><strong>Error:</strong> Could not get summary from AI.<br><br><small class="opacity-70">${detailedError}</small></p>`;
             } finally {
                 buttonElement.innerHTML = originalButtonContent;
                 buttonElement.disabled = false;
