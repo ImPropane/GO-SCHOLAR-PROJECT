@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GoScholar India - Refined Dark Glassmorphism UI</title>
+    <title>GoScholar India - Gemini Powered UI</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,7 +28,6 @@
             -moz-osx-font-smoothing: grayscale;
         }
         
-        /* --- Animated Gradient Background --- */
         .main-container::before {
             content: '';
             position: fixed;
@@ -42,122 +41,68 @@
             transition: opacity 0.5s ease;
         }
 
-        @keyframes gradient-flow {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        h1, h2, h3, h4, .font-heading {
-            font-family: 'Inter', sans-serif;
-            font-weight: 700;
-        }
-
-        @keyframes fade-in-up { 
-            from { opacity: 0; transform: translateY(15px) scale(0.98); } 
-            to { opacity: 1; transform: translateY(0) scale(1); } 
-        }
+        @keyframes gradient-flow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        h1, h2, h3, h4, .font-heading { font-family: 'Inter', sans-serif; font-weight: 700; }
+        @keyframes fade-in-up { from { opacity: 0; transform: translateY(15px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
         .animate-fade-in-up { animation: fade-in-up 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
-
-        @keyframes fade-in {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
+        @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
         
-        /* --- Glassmorphism Panels --- */
         .glass-panel {
             background: rgba(30, 41, 59, 0.5);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
+            backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
             border: 1px solid var(--border-color);
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
             transition: background 0.3s ease, box-shadow 0.3s ease;
         }
 
         .form-input {
-            background-color: rgba(15, 23, 42, 0.6);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            color: var(--text-primary);
-            transition: all 0.2s ease;
+            background-color: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-color);
+            border-radius: 8px; color: var(--text-primary); transition: all 0.2s ease;
         }
         .form-input:focus, .form-input:focus-within {
-             outline: none;
-             border-color: var(--accent-color);
-             box-shadow: 0 0 0 3px var(--accent-glow);
-             background-color: rgba(30, 41, 59, 0.8);
+             outline: none; border-color: var(--accent-color);
+             box-shadow: 0 0 0 3px var(--accent-glow); background-color: rgba(30, 41, 59, 0.8);
         }
-        .form-checkbox {
-            color: var(--accent-color);
-            background: transparent;
-            border-color: var(--border-color);
-        }
-        .form-checkbox:checked { 
-            background-color: var(--accent-color); 
-            border-color: var(--accent-color);
-        }
+        .form-checkbox { color: var(--accent-color); background: transparent; border-color: var(--border-color); }
+        .form-checkbox:checked { background-color: var(--accent-color); border-color: var(--accent-color); }
 
         .result-card {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
-                        box-shadow 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                        background 0.3s ease, border-color 0.3s ease;
+            opacity: 0; transform: translateY(20px);
+            transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94), background 0.3s ease, border-color 0.3s ease;
         }
-
         .result-card:hover {
             transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
-            background: rgba(30, 41, 59, 0.75);
-            border-color: rgba(139, 92, 246, 0.5);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(139, 92, 246, 0.5);
+            background: rgba(30, 41, 59, 0.75); border-color: rgba(139, 92, 246, 0.5);
         }
         .top-match-badge {
-            background: var(--accent-color);
-            color: white;
-            font-size: 10px;
-            font-weight: 700;
-            padding: 3px 10px;
-            border-radius: 99px;
-            text-transform: uppercase;
+            background: var(--accent-color); color: white; font-size: 10px; font-weight: 700;
+            padding: 3px 10px; border-radius: 99px; text-transform: uppercase;
         }
 
         .primary-button {
-            background-color: var(--accent-color);
-            color: white;
-            border-radius: 8px;
-            font-weight: 600;
+            background-color: var(--accent-color); color: white; border-radius: 8px; font-weight: 600;
             transition: all 0.2s ease-in-out;
         }
         .primary-button:hover {
-             background-color: var(--accent-color-hover);
-             transform: translateY(-2px);
-             box-shadow: 0 4px 15px var(--accent-glow);
+             background-color: var(--accent-color-hover); transform: translateY(-2px); box-shadow: 0 4px 15px var(--accent-glow);
         }
-        .primary-button:active {
-            transform: translateY(0) scale(0.98);
-        }
+        .primary-button:active { transform: translateY(0) scale(0.98); }
         
         .secondary-button {
-            background-color: rgba(255, 255, 255, 0.05);
-            color: var(--text-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            font-weight: 600;
+            background-color: rgba(255, 255, 255, 0.05); color: var(--text-secondary);
+            border: 1px solid var(--border-color); border-radius: 8px; font-weight: 600;
             transition: all 0.2s ease-in-out;
         }
         .secondary-button:hover {
-             color: var(--text-primary);
-             background-color: rgba(255, 255, 255, 0.1);
-             border-color: rgba(255, 255, 255, 0.2);
+             color: var(--text-primary); background-color: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2);
         }
         
-        .summary-button {
-             background-color: rgba(139, 92, 246, 0.1);
-             color: var(--accent-color-hover);
+        .ai-button {
+             background-color: rgba(139, 92, 246, 0.1); color: var(--accent-color-hover);
         }
-        .summary-button:hover {
-             background-color: rgba(139, 92, 246, 0.2);
-             color: white;
+        .ai-button:hover {
+             background-color: rgba(139, 92, 246, 0.2); color: white;
         }
 
         ::-webkit-scrollbar { width: 8px; }
@@ -166,45 +111,30 @@
         ::-webkit-scrollbar-thumb:hover { background: #3f4a64; }
         
         .tab-btn {
-            color: var(--text-secondary);
-            transition: all 0.2s ease;
-            position: relative;
-            padding-bottom: 8px;
+            color: var(--text-secondary); transition: all 0.2s ease; position: relative; padding-bottom: 8px;
         }
         .tab-btn::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: var(--accent-color);
-            box-shadow: 0 0 10px var(--accent-glow);
-            transform: scaleX(0);
-            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            border-radius: 2px;
+            content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--accent-color);
+            box-shadow: 0 0 10px var(--accent-glow); transform: scaleX(0);
+            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); border-radius: 2px;
         }
-        .tab-btn.active {
-            color: var(--accent-color);
-        }
-        .tab-btn.active::after {
-            transform: scaleX(1);
-        }
+        .tab-btn.active { color: var(--accent-color); }
+        .tab-btn.active::after { transform: scaleX(1); }
         .tab-btn:hover:not(.active) { color: var(--text-primary); }
 
         .tag { @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium; }
-        .tag-government { 
-            background-color: rgba(34, 211, 238, 0.1);
-            color: #22d3ee;
-        }
-        .tag-private {
-            background-color: rgba(219, 39, 119, 0.1);
-            color: #f472b6;
-        }
+        .tag-government { background-color: rgba(34, 211, 238, 0.1); color: #22d3ee; }
+        .tag-private { background-color: rgba(219, 39, 119, 0.1); color: #f472b6; }
 
     </style>
 </head>
 <body class="font-sans">
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-main text-center bg-gray-900/50 backdrop-blur-sm">
+        <i data-lucide="loader-2" class="w-10 h-10 text-accent-color animate-spin"></i>
+        <p class="mt-4 text-secondary text-sm">Loading Scholarships...</p>
+    </div>
 
     <!-- Error Display Container -->
     <div id="error-container" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
@@ -214,35 +144,20 @@
             <p class="text-secondary mt-2" id="error-message">Could not load critical data. Please check your connection and refresh.</p>
         </div>
     </div>
-
-    <!-- Login Overlay is hidden by default now -->
-    <div id="login-overlay" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-        <div class="glass-panel p-8 w-full max-w-sm text-center transform transition-all animate-fade-in-up rounded-2xl">
-            <h2 class="text-2xl font-bold mb-2">Welcome to GoScholar</h2>
-            <p class="text-secondary mb-8">Find your future, today.</p>
-            <div class="space-y-4">
-                 <button type="button" id="google-login-btn" class="w-full flex items-center justify-center font-medium py-3 px-4 secondary-button bg-white/90 text-gray-800 hover:bg-white">
-                    <svg class="w-5 h-5 mr-3" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"></path><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"></path><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"></path><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.574l6.19,5.238C42.022,35.421,44,30.038,44,24C44,22.659,43.862,21.35,43.611,20.083z"></path></svg>
-                    Sign in with Google
-                </button>
-                 <button type="button" id="guest-login-btn" class="w-full secondary-button py-3 px-4">Continue as Guest</button>
-            </div>
-        </div>
-    </div>
     
-    <!-- AI Summary Modal -->
-    <div id="summary-modal" class="hidden fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-        <div id="summary-modal-content" class="glass-panel p-6 md:p-8 w-full max-w-2xl rounded-2xl animate-fade-in-up">
+    <!-- AI Modal -->
+    <div id="ai-modal" class="hidden fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+        <div id="ai-modal-content" class="glass-panel p-6 md:p-8 w-full max-w-2xl rounded-2xl animate-fade-in-up">
              <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold flex items-center gap-2">
+                <h3 id="ai-modal-title" class="text-xl font-bold flex items-center gap-2">
                     <i data-lucide="sparkles" class="text-accent-color"></i>
-                    AI Summary
+                    AI Feature
                 </h3>
-                <button id="close-summary-btn" class="text-secondary hover:text-primary transition-colors">
+                <button id="close-ai-btn" class="text-secondary hover:text-primary transition-colors">
                     <i data-lucide="x" class="w-6 h-6"></i>
                 </button>
             </div>
-            <div id="summary-text" class="text-primary leading-relaxed max-h-[60vh] overflow-y-auto pr-2"></div>
+            <div id="ai-modal-text" class="text-primary leading-relaxed max-h-[60vh] overflow-y-auto pr-2"></div>
         </div>
     </div>
 
@@ -263,67 +178,67 @@
         <main class="container mx-auto p-4 md:px-6 md:py-8">
             <!-- Finder Tab Content -->
             <div id="finder-content">
-                <div class="text-center mb-10 animate-fade-in-up">
-                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Find Your Perfect Scholarship</h2>
-                    <p class="mt-3 max-w-xl mx-auto text-base text-secondary">Enter your details below and our engine will find opportunities tailored for you.</p>
-                </div>
-
-                <div class="glass-panel p-6 md:p-8 rounded-2xl mb-10">
-                    <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-lg font-semibold">Your Profile</h2>
-                        <button id="clear-form-btn" type="button" title="Reset Profile" class="text-secondary hover:text-primary transition-colors">
-                            <i data-lucide="rotate-cw" class="w-4 h-4"></i>
-                        </button>
-                    </div>
-                    <form id="scholarship-form">
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-6">
-                            <!-- Academic Details -->
-                            <div class="space-y-4">
-                                <h3 class="text-sm font-semibold text-secondary uppercase tracking-wider">Academic Details</h3>
-                                <div id="academic-fields-container" class="space-y-4"></div>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Left Column: Profile Form -->
+                    <div class="lg:col-span-1">
+                        <div class="glass-panel p-6 rounded-2xl sticky top-24">
+                             <div class="flex justify-between items-center mb-6">
+                                <h2 class="text-lg font-semibold">Your Profile</h2>
+                                <button id="clear-form-btn" type="button" title="Reset Profile" class="text-secondary hover:text-primary transition-colors">
+                                    <i data-lucide="rotate-cw" class="w-4 h-4"></i>
+                                </button>
                             </div>
-                            <!-- Personal & Financial -->
-                            <div class="space-y-4">
-                                <h3 class="text-sm font-semibold text-secondary uppercase tracking-wider">Personal & Financial</h3>
-                                <div><label for="category" class="block text-sm font-medium text-primary mb-1.5">Caste Category</label><select id="category" class="form-input w-full p-2.5 text-sm"><option value="GENERAL">General</option><option value="OBC">OBC</option><option value="SC">SC</option><option value="ST">ST</option><option value="MINORITY">Minority</option></select></div>
-                                <div><label for="income" class="block text-sm font-medium text-primary mb-1.5">Annual Family Income (₹)</label><input type="number" id="income" placeholder="e.g., 80000" class="form-input w-full p-2.5 text-sm"></div>
-                                <div><label for="state" class="block text-sm font-medium text-primary mb-1.5">State of Domicile</label><select id="state" class="form-input w-full p-2.5 text-sm"><option value="">Select your State</option></select></div>
-                            </div>
-                            <!-- Special Categories & Filters -->
-                            <div class="space-y-4">
-                                <h3 class="text-sm font-semibold text-secondary uppercase tracking-wider">Other Criteria</h3>
-                                <div class="space-y-3 pt-1">
-                                    <label class="flex items-center"><input type="checkbox" id="exServiceman" class="h-4 w-4 form-checkbox rounded-sm"><span class="ml-3 text-sm text-primary">Ward of Ex-Servicemen</span></label>
-                                    <label class="flex items-center"><input type="checkbox" id="farmer" class="h-4 w-4 form-checkbox rounded-sm"><span class="ml-3 text-sm text-primary">Agricultural Background</span></label>
-                                    <label class="flex items-center"><input type="checkbox" id="disabled" class="h-4 w-4 form-checkbox rounded-sm"><span class="ml-3 text-sm text-primary">Person with Disability (PwD)</span></label>
+                            <form id="scholarship-form" class="space-y-6">
+                                <div class="space-y-4">
+                                    <h3 class="text-sm font-semibold text-secondary uppercase tracking-wider">Academic Details</h3>
+                                    <div id="academic-fields-container" class="space-y-4"></div>
                                 </div>
-                                <div class="pt-2">
-                                    <label class="block text-sm font-medium text-primary mb-2">Scholarship Type</label>
-                                    <div class="flex items-center space-x-2 bg-black/20 p-1 rounded-lg">
-                                        <label class="flex-1 text-center"><input type="radio" name="scholarshipType" value="All" class="sr-only peer" checked><span class="block px-3 py-1.5 rounded-md cursor-pointer text-xs font-semibold peer-checked:bg-slate-700 peer-checked:shadow-sm text-secondary peer-checked:text-white transition-all duration-200">All</span></label>
-                                        <label class="flex-1 text-center"><input type="radio" name="scholarshipType" value="Government" class="sr-only peer"><span class="block px-3 py-1.5 rounded-md cursor-pointer text-xs font-semibold peer-checked:bg-slate-700 peer-checked:shadow-sm text-secondary peer-checked:text-white transition-all duration-200">Govt</span></label>
-                                        <label class="flex-1 text-center"><input type="radio" name="scholarshipType" value="Private" class="sr-only peer"><span class="block px-3 py-1.5 rounded-md cursor-pointer text-xs font-semibold peer-checked:bg-slate-700 peer-checked:shadow-sm text-secondary peer-checked:text-white transition-all duration-200">Private</span></label>
+                                <div class="space-y-4">
+                                    <h3 class="text-sm font-semibold text-secondary uppercase tracking-wider">Personal & Financial</h3>
+                                    <div><label for="category" class="block text-sm font-medium text-primary mb-1.5">Caste Category</label><select id="category" class="form-input w-full p-2.5 text-sm"><option value="GENERAL">General</option><option value="OBC">OBC</option><option value="SC">SC</option><option value="ST">ST</option><option value="MINORITY">Minority</option></select></div>
+                                    <div><label for="income" class="block text-sm font-medium text-primary mb-1.5">Annual Family Income (₹)</label><input type="number" id="income" placeholder="e.g., 80000" class="form-input w-full p-2.5 text-sm"></div>
+                                    <div><label for="state" class="block text-sm font-medium text-primary mb-1.5">State of Domicile</label><select id="state" class="form-input w-full p-2.5 text-sm"><option value="">Select your State</option></select></div>
+                                </div>
+                                <div class="space-y-4">
+                                    <h3 class="text-sm font-semibold text-secondary uppercase tracking-wider">Other Criteria</h3>
+                                    <div class="space-y-3 pt-1">
+                                        <label class="flex items-center"><input type="checkbox" id="exServiceman" class="h-4 w-4 form-checkbox rounded-sm"><span class="ml-3 text-sm text-primary">Ward of Ex-Servicemen</span></label>
+                                        <label class="flex items-center"><input type="checkbox" id="farmer" class="h-4 w-4 form-checkbox rounded-sm"><span class="ml-3 text-sm text-primary">Agricultural Background</span></label>
+                                        <label class="flex items-center"><input type="checkbox" id="disabled" class="h-4 w-4 form-checkbox rounded-sm"><span class="ml-3 text-sm text-primary">Person with Disability (PwD)</span></label>
+                                    </div>
+                                    <div class="pt-2">
+                                        <label class="block text-sm font-medium text-primary mb-2">Scholarship Type</label>
+                                        <div class="flex items-center space-x-2 bg-black/20 p-1 rounded-lg">
+                                            <label class="flex-1 text-center"><input type="radio" name="scholarshipType" value="All" class="sr-only peer" checked><span class="block px-3 py-1.5 rounded-md cursor-pointer text-xs font-semibold peer-checked:bg-slate-700 peer-checked:shadow-sm text-secondary peer-checked:text-white transition-all duration-200">All</span></label>
+                                            <label class="flex-1 text-center"><input type="radio" name="scholarshipType" value="Government" class="sr-only peer"><span class="block px-3 py-1.5 rounded-md cursor-pointer text-xs font-semibold peer-checked:bg-slate-700 peer-checked:shadow-sm text-secondary peer-checked:text-white transition-all duration-200">Govt</span></label>
+                                            <label class="flex-1 text-center"><input type="radio" name="scholarshipType" value="Private" class="sr-only peer"><span class="block px-3 py-1.5 rounded-md cursor-pointer text-xs font-semibold peer-checked:bg-slate-700 peer-checked:shadow-sm text-secondary peer-checked:text-white transition-all duration-200">Private</span></label>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </form>
                         </div>
-                    </form>
-                </div>
+                    </div>
 
-                <div>
-                    <h2 id="results-title" class="text-xl font-bold text-primary mb-4">Your Matched Scholarships</h2>
-                    <div id="results-container" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 transition-opacity duration-300"></div>
+                    <!-- Right Column: Scholarship Results -->
+                    <div class="lg:col-span-2">
+                        <div class="text-center mb-6 lg:hidden">
+                             <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Find Your Perfect Scholarship</h2>
+                            <p class="mt-3 max-w-xl mx-auto text-base text-secondary">Your results will appear below as you fill your profile.</p>
+                        </div>
+                        <h2 id="results-title" class="text-xl font-bold text-primary mb-4">Your Matched Scholarships</h2>
+                        <div id="results-container" class="grid grid-cols-1 md:grid-cols-2 gap-6 transition-opacity duration-300"></div>
+                    </div>
                 </div>
             </div>
 
-            <!-- All Scholarships Content -->
+            <!-- All Scholarships Content (Full Width) -->
             <div id="all-scholarships-content" class="hidden">
                  <div class="mb-8"><h2 class="text-3xl font-bold">Scholarship Database</h2><p class="text-secondary mt-1">Search our entire collection of scholarship opportunities.</p></div>
                  <div class="relative mb-6"><input type="text" id="all-scholarships-search" placeholder="Search by name, portal, or keywords..." class="w-full pl-10 pr-4 py-3 form-input"><div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i data-lucide="search" class="w-5 h-5 text-secondary"></i></div></div>
                  <div id="all-scholarships-list" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"></div>
             </div>
             
-            <!-- Credits Content -->
+            <!-- Credits Content (Full Width) -->
             <div id="credits-content" class="hidden">
                  <div class="text-center mb-12"><h2 class="text-4xl md:text-5xl font-bold tracking-tight">Project Credits</h2></div>
                 <div class="glass-panel p-8 md:p-12 max-w-2xl mx-auto rounded-2xl">
@@ -351,54 +266,34 @@
     </div>
 
     <script>
-        // --- DATA & CONFIG ---
         const states = ["Andhra Pradesh","Arunachal Pradesh","Assam","Bihar","Chhattisgarh","Goa","Gujarat","Haryana","Himachal Pradesh","Jharkhand","Karnataka","Kerala","Madhya Pradesh","Maharashtra","Manipur","Meghalaya","Mizoram","Nagaland","Odisha","Punjab","Rajasthan","Sikkim","Tamil Nadu","Telangana","Tripura","Uttar Pradesh","Uttarakhand","West Bengal","Andaman and Nicobar Islands","Chandigarh","Dadra and Nagar Haveli and Daman and Diu","Delhi","Jammu and Kashmir","Ladakh","Lakshadweed","Puducherry"];
         let scholarships = [];
-        // No API Key needed on the frontend anymore!
-
-        // --- UTILITY ---
-        const debounce = (func, delay = 400) => { let timeout; return (...args) => { clearTimeout(timeout); timeout = setTimeout(() => { func.apply(this, args); }, delay); }; };
         
-        // --- INITIALIZATION ---
+        const debounce = (func, delay = 400) => { let timeout; return (...args) => { clearTimeout(timeout); timeout = setTimeout(() => { func.apply(this, args); }, delay); }; };
+
         document.addEventListener('DOMContentLoaded', () => {
-            performLogin(); 
-            const googleLoginBtn = document.getElementById('google-login-btn');
-            googleLoginBtn.addEventListener('click', () => {
-                const originalContent = googleLoginBtn.innerHTML;
-                googleLoginBtn.textContent = 'Coming Soon!';
-                googleLoginBtn.disabled = true;
-                setTimeout(() => {
-                    googleLoginBtn.innerHTML = originalContent;
-                    googleLoginBtn.disabled = false;
-                }, 2000);
-            });
-            const summaryModal = document.getElementById('summary-modal');
-            const closeSummaryBtn = document.getElementById('close-summary-btn');
-            closeSummaryBtn.addEventListener('click', closeSummary);
-            summaryModal.addEventListener('click', (e) => {
-                if (e.target === summaryModal) {
-                    closeSummary();
+            initializeApp(); 
+            const aiModal = document.getElementById('ai-modal');
+            const closeAIBtn = document.getElementById('close-ai-btn');
+            closeAIBtn.addEventListener('click', () => aiModal.classList.add('hidden'));
+            aiModal.addEventListener('click', (e) => {
+                if (e.target === aiModal) {
+                    aiModal.classList.add('hidden');
                 }
             });
         });
-
-        function performLogin() {
-            document.getElementById('login-overlay').classList.add('hidden');
-            document.getElementById('main-content').classList.remove('hidden');
-            initializeApp();
-        }
 
         async function initializeApp() {
             try {
                 const response = await fetch("https://goscholar-backend.propane.workers.dev/");
                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 scholarships = await response.json();
+                document.getElementById('loading-overlay').classList.add('hidden');
+                document.getElementById('main-content').classList.remove('hidden');
             } catch (error) {
                 console.error("Failed to fetch scholarships:", error);
                 const errorContainer = document.getElementById('error-container');
-                const mainContent = document.getElementById('main-content');
-                document.getElementById('login-overlay').classList.add('hidden');
-                mainContent.classList.add('hidden');
+                document.getElementById('loading-overlay').classList.add('hidden');
                 errorContainer.classList.remove('hidden');
                 if (typeof lucide !== 'undefined') lucide.createIcons();
                 return;
@@ -514,68 +409,88 @@
             searchInput.addEventListener('input', debounce(() => displayAllScholarships(searchInput.value), 300));
         }
 
-        // --- AI SUMMARY FUNCTIONS (Hugging Face via Cloudflare Worker) ---
-        function openSummary(scholarship) {
-            const summaryModal = document.getElementById('summary-modal');
-            const summaryText = document.getElementById('summary-text');
-            const summaryButton = document.querySelector(`#${scholarship.cardId} .summary-button`);
-            const originalButtonContent = summaryButton.innerHTML;
+        // --- AI SUMMARY FUNCTIONS ---
+        function openAIModal(title, scholarship, buttonElement, type) {
+            const aiModal = document.getElementById('ai-modal');
+            const aiModalTitle = document.getElementById('ai-modal-title');
+            const aiModalText = document.getElementById('ai-modal-text');
+            const originalButtonContent = buttonElement.innerHTML;
             
-            summaryModal.classList.remove('hidden');
-            summaryText.innerHTML = `
+            aiModalTitle.innerHTML = `<i data-lucide="sparkles" class="text-accent-color"></i> ${title}`;
+            aiModal.classList.remove('hidden');
+            aiModalText.innerHTML = `
                 <div class="animate-pulse space-y-3">
                     <div class="h-4 bg-slate-700 rounded w-3/4 mb-2"></div>
                     <div class="h-4 bg-slate-700 rounded w-full"></div>
                     <div class="h-4 bg-slate-700 rounded w-5/6"></div>
                 </div>`;
 
-            if (summaryButton) {
-                summaryButton.disabled = true;
-                summaryButton.innerHTML = `<i data-lucide="loader-2" class="animate-spin h-4 w-4 mx-auto"></i>`;
-                if(typeof lucide !== 'undefined') lucide.createIcons();
-            }
+            buttonElement.disabled = true;
+            buttonElement.innerHTML = `<i data-lucide="loader-2" class="animate-spin h-4 w-4 mx-auto"></i>`;
+            if(typeof lucide !== 'undefined') lucide.createIcons();
 
-            getAISummary(scholarship).then(summary => {
-                summaryText.innerHTML = summary.replace(/\n/g, '<br>');
+            callAIWorker(scholarship, type).then(result => {
+                aiModalText.innerHTML = result.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
             }).catch(err => {
-                summaryText.innerHTML = `<p class="text-red-400"><strong>⚠ Could not load summary.</strong><br><small>${err.message}</small></p>`;
+                let errorMessage = `<strong>⚠ Could not load result.</strong><br><small>${err.message}</small>`;
+                if (err.message.includes("is currently loading")) {
+                    errorMessage = `<strong>AI Model is starting up.</strong><br><small>This can take up to 20 seconds on the free tier. Please try again in a moment.</small>`
+                }
+                aiModalText.innerHTML = `<p class="text-red-400">${errorMessage}</p>`;
                 console.error(err);
             }).finally(() => {
-                if(summaryButton) {
-                    summaryButton.disabled = false;
-                    summaryButton.innerHTML = originalButtonContent;
-                    if(typeof lucide !== 'undefined') lucide.createIcons();
-                }
+                buttonElement.disabled = false;
+                buttonElement.innerHTML = originalButtonContent;
+                if(typeof lucide !== 'undefined') lucide.createIcons();
             });
         }
 
         function closeSummary() {
-            document.getElementById('summary-modal').classList.add('hidden');
+            document.getElementById('ai-modal').classList.add('hidden');
         }
 
-        async function getAISummary(scholarship) {
-            const textToSummarize = `Name: ${scholarship.name}\nDescription: ${scholarship.description}\nEligibility: ${JSON.stringify(scholarship.eligibility, null, 2)}`;
+        async function callAIWorker(scholarship, type) {
+            const endpoint = type === 'summary' ? '/summarize' : '/eligibility-check';
+            const payload = { scholarship };
+
+            if (type === 'eligibility-check') {
+                payload.student = {
+                    level: document.getElementById('studyLevel')?.value,
+                    stream: document.getElementById('fieldOfStudy')?.value,
+                    currentClass: parseInt(document.getElementById('currentClass')?.value, 10) || 0,
+                    currentSemester: parseInt(document.getElementById('currentSemester')?.value, 10) || 0,
+                    marksPrev: parseInt(document.getElementById('marksPrev')?.value, 10) || 0,
+                    marks10: parseInt(document.getElementById('marks10')?.value, 10) || 0,
+                    marks12: parseInt(document.getElementById('marks12')?.value, 10) || 0,
+                    marksUG: parseInt(document.getElementById('marksUG')?.value, 10) || 0,
+                    marksPG: parseInt(document.getElementById('marksPG')?.value, 10) || 0,
+                    cgpa: parseFloat(document.getElementById('cgpa')?.value) || 0,
+                    category: document.getElementById('category').value,
+                    income: parseInt(document.getElementById('income').value, 10) || 0,
+                    domicile: document.getElementById('state').value,
+                    isExServiceman: document.getElementById('exServiceman').checked,
+                    isFarmer: document.getElementById('farmer').checked,
+                    isDisabled: document.getElementById('disabled').checked
+                };
+            }
             
-            const response = await fetch(
-                "https://goscholar-backend.propane.workers.dev/summarize", 
-                {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ text: textToSummarize })
-                }
-            );
+            const response = await fetch(`https://goscholar-backend.propane.workers.dev${endpoint}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
 
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.error || "Failed to fetch summary from the backend worker.");
+                throw new Error(errorData.error || "Failed to fetch from the backend worker.");
             }
 
             const data = await response.json();
-            if (data.summary) {
-                return data.summary;
+            if (data.result) {
+                return data.result;
             }
             
-            throw new Error("No summary available or unexpected response format from the backend worker.");
+            throw new Error("Unexpected response format from the backend worker.");
         }
         
         // --- CORE LOGIC ---
@@ -652,12 +567,12 @@
                 
                 if (!hasRequiredInput) {
                     title.textContent = 'Start by filling in your profile';
-                    container.innerHTML = `<div class="bg-purple-900/20 border-l-4 border-[var(--accent-color)] p-6 rounded-r-xl col-span-1 md:col-span-2 xl:col-span-3 text-center animate-fade-in-up"><h3 class="font-semibold text-[var(--accent-color)]">Ready to find scholarships?</h3><p class="mt-1 text-sm text-secondary">Fill in your details above to begin.</p></div>`;
+                    container.innerHTML = `<div class="bg-purple-900/20 border-l-4 border-[var(--accent-color)] p-6 rounded-r-xl col-span-1 md:col-span-3 text-center animate-fade-in-up"><h3 class="font-semibold text-[var(--accent-color)]">Ready to find scholarships?</h3><p class="mt-1 text-sm text-secondary">Fill in your details above to begin.</p></div>`;
                 } else {
                     title.innerHTML = `Found <span class="text-[var(--accent-color)]">${results.length}</span> Matching Scholarships`;
 
                     if (results.length === 0) {
-                        container.innerHTML = `<div class="glass-panel p-8 rounded-xl text-center col-span-1 md:col-span-2 xl:col-span-3 animate-fade-in-up"><i data-lucide="search-x" class="mx-auto h-10 w-10 text-secondary" stroke-width="1.5"></i><h3 class="mt-4 text-base font-semibold text-primary">No Matching Scholarships Found</h3><p class="mt-1 text-sm text-secondary">We couldn't find any scholarships for your profile. Try adjusting the criteria.</p></div>`;
+                        container.innerHTML = `<div class="glass-panel p-8 rounded-xl text-center col-span-1 md:col-span-3 animate-fade-in-up"><i data-lucide="search-x" class="mx-auto h-10 w-10 text-secondary" stroke-width="1.5"></i><h3 class="mt-4 text-base font-semibold text-primary">No Matching Scholarships Found</h3><p class="mt-1 text-sm text-secondary">We couldn't find any scholarships for your profile. Try adjusting the criteria.</p></div>`;
                     } else {
                         const maxScore = results.length > 0 ? results[0].matchScore : 0;
                         results.forEach((s, index) => {
@@ -704,17 +619,17 @@
                     <ul class="space-y-1.5">${eligibilityItems.slice(0, 3).join('')}</ul>
                 </div>
                 <div class="mt-5 flex-shrink-0 grid grid-cols-2 gap-3">
-                    <a href="${s.link}" target="_blank" class="primary-button inline-flex items-center justify-center w-full text-center px-4 py-2.5 text-sm">
-                        Visit Portal <i data-lucide="arrow-right" class="inline-block ml-1.5 h-4 w-4"></i>
-                    </a>
-                    <button class="secondary-button summary-button inline-flex items-center justify-center w-full text-center px-4 py-2.5 text-sm">
+                     <button class="ai-button secondary-button inline-flex items-center justify-center w-full text-center px-4 py-2.5 text-sm" onclick="openAIModal('✨ AI Summary', scholarships.find(sch => sch.name === '${s.name.replace(/'/g, "\\'")}'), this, 'summary')">
                         Summarize <i data-lucide="sparkles" class="inline-block ml-1.5 h-4 w-4"></i>
+                    </button>
+                    <button class="primary-button inline-flex items-center justify-center w-full text-center px-4 py-2.5 text-sm" onclick="openAIModal('✨ Eligibility Check', scholarships.find(sch => sch.name === '${s.name.replace(/'/g, "\\'")}'), this, 'eligibility-check')">
+                        Am I Eligible? <i data-lucide="user-check" class="inline-block ml-1.5 h-4 w-4"></i>
                     </button>
                 </div>`;
             
             // Attach event listener
             const summaryButton = card.querySelector('.summary-button');
-            summaryButton.addEventListener('click', () => openSummary(s));
+            // summaryButton.addEventListener('click', () => openSummary(s)); No longer needed with onclick
 
             return card;
         }
